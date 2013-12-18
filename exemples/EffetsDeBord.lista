@@ -1,0 +1,7 @@
+Carre (n) = n * n;
+
+Cube (p) = p * p * p;
+
+Puissance6 (k) = Carre (Cube (k));
+
+? Puissance6 (LireNombre ("Pour quelle valeur voulez-vous calculer 'Puissance6'?") - 3);

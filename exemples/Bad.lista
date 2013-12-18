@@ -1,0 +1,4 @@
+toto (n,m) = m * n;
+toto (n,n) = n * n;
+
+? toto (3);

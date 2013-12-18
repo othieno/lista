@@ -1,0 +1,87 @@
+# -------------------------------------------------------------------------
+#	Makefile pour la gestion des langues et des options des executables
+#	J. Menu - 19/10/2010
+#
+#	Version $Id$ du $Date$
+# -------------------------------------------------------------------------
+
+
+# -------------------------------------------------------------------------
+#	Objets à construire
+# -------------------------------------------------------------------------
+
+OBJETS_LanguesEtDecodageDOptions = \
+	$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.o \
+	$(LANGUES_ET_DECODAGE_D_OPTIONS)/DecodageDOptions.o
+
+
+# -------------------------------------------------------------------------
+#	La cible à construire
+# -------------------------------------------------------------------------
+
+.PHONY : message_LanguesEtDecodageDOptions objets_LanguesEtDecodageDOptions
+
+message_LanguesEtDecodageDOptions:
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> objets_LanguesEtDecodageDOptions:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+
+objets_LanguesEtDecodageDOptions: \
+		message_LanguesEtDecodageDOptions \
+		$(OBJETS_LanguesEtDecodageDOptions)
+
+
+# -------------------------------------------------------------------------
+#	Langues
+# -------------------------------------------------------------------------
+
+$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.o : \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.cc \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		$(TYPES_ET_VERSION)/Version.h \
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(MAKEFILE_LanguesEtDecodageDOptions)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	DecodageDOptions
+# -------------------------------------------------------------------------
+
+$(LANGUES_ET_DECODAGE_D_OPTIONS)/DecodageDOptions.o : \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/DecodageDOptions.cc \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/DecodageDOptions.h \
+		$(TYPES_ET_VERSION)/Version.h \
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(MAKEFILE_LanguesEtDecodageDOptions)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	clean_LanguesEtDecodageDOptions
+# -------------------------------------------------------------------------
+
+.PHONY : clean_LanguesEtDecodageDOptions
+
+clean_LanguesEtDecodageDOptions :
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> $@:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+	rm -f $(OBJETS_LanguesEtDecodageDOptions)
+	@echo ""

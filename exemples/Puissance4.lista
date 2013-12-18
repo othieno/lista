@@ -1,0 +1,7 @@
+cube (n) = n * n * n;
+puissance6 (t) = cube (cube (t));
+
+? puissance6 (
+	LireNombre (
+		"Pour quelle valeur voulez-vous calculer 'puissance6'?" )
+	);

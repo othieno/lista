@@ -1,0 +1,6 @@
+carre (n) = n * n;
+
+? carre (
+	LireNombre (
+		"Pour quelle valeur voulez-vous calculer 'carre'?" )
+	);

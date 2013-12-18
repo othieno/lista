@@ -1,0 +1,15 @@
+	-I $(SOURCES_DIR)/SupportCPlusPlus \
+	\
+	-I $(SOURCES_DIR)/Langues \
+	-I $(SOURCES_DIR)/LanguesPredefinis \
+	\
+	-I $(SOURCES_DIR)/Lexique \
+	\
+	-I $(SOURCES_DIR)/Syntaxe \
+	\
+	-I $(SOURCES_DIR)/Semantique \
+	\
+	-I $(SOURCES_DIR)/MachinePilum \
+	\
+	-I $(SOURCES_DIR)/SynthesePilum
+

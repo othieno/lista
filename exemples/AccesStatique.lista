@@ -1,0 +1,17 @@
+carre (n) = n * n;
+
+øcube (s) = s * s * s;
+
+puissance6 (t) = carre (cube (t));
+
+? Pour (
+	i,
+	1, 3,
+	Seq (
+		EcrireChaine ("--> puissance6 ("),
+		EcrireNombre (i),
+		EcrireChaine (") = "),
+		EcrireNombre (puissance6 (i)),
+		EcrireFinDeLigne ()
+		)
+	);

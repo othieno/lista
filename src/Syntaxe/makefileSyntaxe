@@ -1,0 +1,276 @@
+# -------------------------------------------------------------------------
+#	Makefile pour Syntaxe
+#	J. Menu - 19/10/2010
+#
+#	Version $Id$ du $Date$
+# -------------------------------------------------------------------------
+
+
+# -------------------------------------------------------------------------
+#	Objets et exécutables à construire
+# -------------------------------------------------------------------------
+
+EXECUTABLES_Syntaxe = \
+	$(SYNTAXE)/ListaSyntPredictifDescenteRecursive \
+	$(SYNTAXE)/ListaSyntFlexBison
+	
+OBJETS_Syntaxe = \
+	$(SYNTAXE)/LanguesSyntaxe.o \
+	\
+	$(SYNTAXE)/Syntaxe.o \
+	\
+	$(SYNTAXE)/SyntaxeBison.tab.o \
+	$(SYNTAXE)/SyntaxeMainFlexBison.o \
+	\
+	$(SYNTAXE)/AnalyseurDescendantLista.o \
+	$(SYNTAXE)/DecodageDOptionsSyntaxe.o \
+	$(SYNTAXE)/SyntaxeMainPredictifDescenteRecursive.o
+	
+
+FICHIERS_SYNTHETISES_Syntaxe = \
+	$(SYNTAXE)/SyntaxeBison.yy.cc \
+	\
+	$(SYNTAXE)/SyntaxeBison.tab.cc \
+	$(SYNTAXE)/SyntaxeBison.tab.hh \
+	$(SYNTAXE)/SyntaxeBison.output
+	
+
+# -------------------------------------------------------------------------
+#	La cible à construire
+# -------------------------------------------------------------------------
+
+.PHONY : message_Syntaxe executables_Syntaxe
+
+message_Syntaxe:
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> objets_Syntaxe:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+
+executables_Syntaxe: \
+		message_Syntaxe \
+		$(EXECUTABLES_Syntaxe)
+
+
+# -------------------------------------------------------------------------
+#	LanguesSyntaxe
+# -------------------------------------------------------------------------
+
+$(SYNTAXE)/LanguesSyntaxe.o : \
+		$(SYNTAXE)/LanguesSyntaxe.cc \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		\
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		\
+		$(LEXIQUE)/LanguesLexique.h \
+		\
+		$(MAKEFILE_Syntaxe)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LEXIQUE)
+
+
+# -------------------------------------------------------------------------
+#	DecodageDOptionsSyntaxe
+# -------------------------------------------------------------------------
+
+$(SYNTAXE)/DecodageDOptionsSyntaxe.o : \
+		$(SYNTAXE)/DecodageDOptionsSyntaxe.cc \
+		$(SYNTAXE)/DecodageDOptionsSyntaxe.h \
+		\
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		\
+		$(LEXIQUE)/LanguesLexique.h \
+		\
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(MAKEFILE_Syntaxe)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LEXIQUE)
+
+
+# -------------------------------------------------------------------------
+#	Analyses lexicale et syntaxique seules
+#  (predictive et descente recursive)
+# -------------------------------------------------------------------------
+
+$(SYNTAXE)/AnalyseurDescendantLista.o : \
+		$(SYNTAXE)/AnalyseurDescendantLista.cc \
+		$(SYNTAXE)/AnalyseurDescendantLista.h \
+		\
+		$(TYPES_ET_VERSION)/Types.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		\
+		$(LEXIQUE)/AnalyseurLexicalLista.h \
+		\
+		$(MAKEFILE_Syntaxe)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LEXIQUE)
+
+$(SYNTAXE)/SyntaxeMainPredictifDescenteRecursive.o : \
+		$(SYNTAXE)/SyntaxeMainPredictifDescenteRecursive.cc \
+		\
+		$(TYPES_ET_VERSION)/Types.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		\
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SYNTAXE)/DecodageDOptionsSyntaxe.h \
+		$(SYNTAXE)/AnalyseurDescendantLista.h \
+		$(MAKEFILE_Syntaxe)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LEXIQUE)
+
+
+# -------------------------------------------------------------------------
+#	ListaSyntPredictifDescenteRecursive
+# -------------------------------------------------------------------------
+
+$(SYNTAXE)/ListaSyntPredictifDescenteRecursive : \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.o \
+		$(SUPPORT_CPLUSPLUS)/LanguesSupportCPlusPlus.o \
+		\
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.o \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/DecodageDOptions.o \
+		\
+		$(LEXIQUE)/LanguesLexique.o \
+		$(LEXIQUE)/ProducteurDeCaracteres.o \
+		$(LEXIQUE)/FichierDeCaracteres.o \
+		$(LEXIQUE)/AnalyseurLexicalLista.o \
+		$(LEXIQUE)/DecodageDOptionsLexique.o \
+		\
+		$(SYNTAXE)/LanguesSyntaxe.o \
+		$(SYNTAXE)/AnalyseurDescendantLista.o \
+		$(SYNTAXE)/DecodageDOptionsSyntaxe.o \
+		$(SYNTAXE)/SyntaxeMainPredictifDescenteRecursive.o
+	@echo ""
+	$(CXX) \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$^
+	@echo ""
+	@ls -sal $@
+	@echo ""
+	
+
+# -------------------------------------------------------------------------
+#	Analyses lexicale et syntaxique seules
+#	(Flex et Bison)
+# -------------------------------------------------------------------------
+
+$(SYNTAXE)/SyntaxeBison.tab.o : \
+		$(SYNTAXE)/SyntaxeBison.tab.cc \
+		\
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		\
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SYNTAXE)/SyntaxeBison.yy.cc \
+		$(MAKEFILE_Syntaxe)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LEXIQUE) \
+			-I $(SUPPORT_FLEX_BISON)
+
+
+$(SYNTAXE)/SyntaxeMainFlexBison.o : \
+		$(SYNTAXE)/SyntaxeMainFlexBison.cc \
+		\
+		$(TYPES_ET_VERSION)/Types.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		\
+		$(SUPPORT_FLEX_BISON)/SupportFlexBison.h \
+		\
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SYNTAXE)/DecodageDOptionsSyntaxe.h \
+		$(MAKEFILE_Syntaxe)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LEXIQUE) \
+			-I $(SUPPORT_FLEX_BISON)
+
+
+# -------------------------------------------------------------------------
+#	ListaSyntFlexBison
+# -------------------------------------------------------------------------
+
+$(SYNTAXE)/ListaSyntFlexBison : \
+		$(SUPPORT_CPLUSPLUS)/LanguesSupportCPlusPlus.o \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.o \
+		\
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.o \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/DecodageDOptions.o \
+		\
+		$(LEXIQUE)/LanguesLexique.o \
+		$(LEXIQUE)/DecodageDOptionsLexique.o \
+		\
+		$(SUPPORT_FLEX_BISON)/SupportFlexBison.o \
+		\
+		$(SYNTAXE)/LanguesSyntaxe.o \
+		$(SYNTAXE)/SyntaxeBison.tab.o \
+		$(SYNTAXE)/DecodageDOptionsSyntaxe.o \
+		$(SYNTAXE)/SyntaxeMainFlexBison.o
+	@echo ""
+	$(CXX) \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$^
+	@echo ""
+	@ls -sal $@
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	clean_Syntaxe
+# -------------------------------------------------------------------------
+
+.PHONY : clean_Syntaxe
+
+clean_Syntaxe :
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> $@:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+	rm -f \
+		$(FICHIERS_SYNTHETISES_Syntaxe) \
+		$(OBJETS_Syntaxe) \
+		$(EXECUTABLES_Syntaxe)
+	@echo ""

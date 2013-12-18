@@ -1,0 +1,300 @@
+# -------------------------------------------------------------------------
+#	Makefile pour Lexique
+#	J. Menu - 19/10/2010
+#
+#	Version $Id$ du $Date$
+# -------------------------------------------------------------------------
+
+
+# -------------------------------------------------------------------------
+#	Objets et exécutables à construire
+# -------------------------------------------------------------------------
+
+EXECUTABLES_Lexique = \
+	$(LEXIQUE)/ListaLexPredictif \
+	$(LEXIQUE)/ListaLexFlex
+	
+OBJETS_Lexique = \
+	$(LEXIQUE)/LanguesLexique.o \
+	\
+	$(LEXIQUE)/FichierDeCaracteres.o \
+	$(LEXIQUE)/ProducteurDeCaracteres.o \
+	\
+	$(LEXIQUE)/AnalyseurLexicalLista.o \
+	$(LEXIQUE)/LexiqueMainPredictif.o \
+	\
+	$(LEXIQUE)/LexiqueFlex.yy.o \
+	\
+	$(LEXIQUE)/DecodageDOptionsLexique.o \
+	$(LEXIQUE)/LexiqueMainFlex.o
+
+FICHIERS_SYNTHETISES_Lexique = \
+	$(LEXIQUE)/LexiqueFlex.yy.cc
+	
+
+# -------------------------------------------------------------------------
+#	La cible à construire
+# -------------------------------------------------------------------------
+
+.PHONY : message_Lexique executables_Lexique
+
+message_Lexique:
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> executables_Lexique:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+
+executables_Lexique: \
+		message_Lexique \
+		$(EXECUTABLES_Lexique)
+
+
+# -------------------------------------------------------------------------
+#	LanguesLexique
+# -------------------------------------------------------------------------
+
+$(LEXIQUE)/LanguesLexique.o : \
+		$(LEXIQUE)/LanguesLexique.cc \
+		$(LEXIQUE)/LanguesLexique.h \
+		\
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		\
+		$(MAKEFILE_Lexique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	DecodageDOptionsLexique
+# -------------------------------------------------------------------------
+
+$(LEXIQUE)/DecodageDOptionsLexique.o : \
+		$(LEXIQUE)/DecodageDOptionsLexique.cc \
+		$(LEXIQUE)/DecodageDOptionsLexique.h \
+		\
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/DecodageDOptions.h \
+		\
+		$(LEXIQUE)/LanguesLexique.h \
+		$(MAKEFILE_Lexique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	Analyse lexicale seule
+#  (predictive)
+# -------------------------------------------------------------------------
+
+$(LEXIQUE)/FichierDeCaracteres.o : \
+		$(LEXIQUE)/FichierDeCaracteres.cc \
+		$(LEXIQUE)/FichierDeCaracteres.h \
+		\
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		\
+		$(MAKEFILE_Lexique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS)
+	@echo ""
+
+$(LEXIQUE)/ProducteurDeCaracteres.o : \
+		$(LEXIQUE)/ProducteurDeCaracteres.cc \
+		$(LEXIQUE)/ProducteurDeCaracteres.h \
+		\
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		\
+		$(LEXIQUE)/LanguesLexique.h \
+		$(LEXIQUE)/FichierDeCaracteres.h \
+		$(MAKEFILE_Lexique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS)
+	@echo ""
+
+$(LEXIQUE)/AnalyseurLexicalLista.o : \
+		$(LEXIQUE)/AnalyseurLexicalLista.cc \
+		$(LEXIQUE)/AnalyseurLexicalLista.h \
+		\
+		$(TYPES_ET_VERSION)/Types.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		\
+		$(LEXIQUE)/ProducteurDeCaracteres.h \
+		$(LEXIQUE)/DecodageDOptionsLexique.h \
+		$(MAKEFILE_Lexique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS)
+	@echo ""
+
+$(LEXIQUE)/LexiqueMainPredictif.o : \
+		$(LEXIQUE)/LexiqueMainPredictif.cc \
+		\
+		$(TYPES_ET_VERSION)/Types.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		\
+		$(LEXIQUE)/LanguesLexique.h \
+		$(LEXIQUE)/AnalyseurLexicalLista.h \
+		$(LEXIQUE)/DecodageDOptionsLexique.h \
+		$(MAKEFILE_Lexique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	ListaLexPredictif
+# -------------------------------------------------------------------------
+
+$(LEXIQUE)/ListaLexPredictif : \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.o \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/DecodageDOptions.o \
+		\
+		$(SUPPORT_CPLUSPLUS)/LanguesSupportCPlusPlus.o \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.o \
+		\
+		$(LEXIQUE)/LanguesLexique.o \
+		$(LEXIQUE)/ProducteurDeCaracteres.o \
+		$(LEXIQUE)/FichierDeCaracteres.o \
+		$(LEXIQUE)/AnalyseurLexicalLista.o \
+		$(LEXIQUE)/DecodageDOptionsLexique.o \
+		$(LEXIQUE)/LexiqueMainPredictif.o
+	@echo ""
+	$(CXX) \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$^
+	@echo ""
+	@ls -sal $@
+	@echo ""
+	
+
+# -------------------------------------------------------------------------
+#	Analyse lexicale seule
+#	(Flex)
+# -------------------------------------------------------------------------
+
+$(LEXIQUE)/LexiqueFlex.yy.o : \
+		$(LEXIQUE)/LexiqueFlex.yy.cc \
+		\
+		$(TYPES_ET_VERSION)/Types.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		\
+		$(SUPPORT_FLEX)/SupportFlex.h \
+		\
+		$(LEXIQUE)/LanguesLexique.h \
+		$(LEXIQUE)/TerminauxFlexLista.h \
+		$(MAKEFILE_Lexique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(SUPPORT_FLEX)
+	@echo ""
+
+$(LEXIQUE)/LexiqueMainFlex.o : \
+		$(LEXIQUE)/LexiqueMainFlex.cc \
+		\
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		\
+		$(SUPPORT_FLEX)/SupportFlex.h \
+		\
+		$(LEXIQUE)/LanguesLexique.h \
+		$(LEXIQUE)/DecodageDOptionsLexique.h \
+		$(MAKEFILE_Lexique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(SUPPORT_FLEX)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	ListaLexFlex
+# -------------------------------------------------------------------------
+
+$(LEXIQUE)/ListaLexFlex : \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.o \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/DecodageDOptions.o \
+		\
+		$(SUPPORT_CPLUSPLUS)/LanguesSupportCPlusPlus.o \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.o \
+		\
+		$(SUPPORT_FLEX)/SupportFlex.o \
+		\
+		$(LEXIQUE)/LanguesLexique.o \
+		$(LEXIQUE)/LexiqueFlex.yy.o \
+		$(LEXIQUE)/DecodageDOptionsLexique.o \
+		$(LEXIQUE)/LexiqueMainFlex.o
+	@echo ""
+	$(CXX) \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$^
+	@echo ""
+	@ls -sal $@
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	clean_Lexique
+# -------------------------------------------------------------------------
+
+.PHONY : clean_Lexique
+
+clean_Lexique :
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> $@:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+	rm -f \
+		$(FICHIERS_SYNTHETISES_Lexique) \
+		$(OBJETS_Lexique) \
+		$(EXECUTABLES_Lexique)
+	@echo ""

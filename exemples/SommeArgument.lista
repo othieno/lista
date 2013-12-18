@@ -1,0 +1,8 @@
+toto (p) = p + p;
+
+
+? toto (
+	Somme (i, 1, 5, i * i)
+	);
+	
+	

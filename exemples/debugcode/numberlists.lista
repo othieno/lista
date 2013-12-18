@@ -1,0 +1,64 @@
+/// f(L) = Car(L);																/// TYPE INFERENCE DOES NOT WORK, SHOULD I BE WORRIED?!
+																						/// SHOULD THIS INITIALLY BE 'TYPENONPRECISE' OR 'TYPEINCONNU'?
+
+
+
+//? ConcatListes( Cons( 1, Cons( 2, Y ) ), Z );
+//? 2 + Car([-1, 2]);
+//? Cons( 1, [1] );
+//? Cons( [], [1] );
+//? Cons( 1, [1] );
+
+//? Z;
+//O = Car(Cons( 2, (Cdr([1, "", 2, 3]))));
+//O = Car((Cdr([1, "", 2, 3])));
+//O = Car(X);
+//? O;
+/**
+
+? Car( Z );
+? Cdr( Z );
+? Car(Cdr(Cdr(Cdr(Cdr(Cdr( Z ))))));
+? LongueurListe( Z );
+? Cons( 2, Y );
+? ConcatListes( [2, 1, 0], [0, 1, 2] );
+
+// **/
+
+
+
+//listeEntiers (debut) =
+	//Cons( debut, listeEntiers( debut + 1 ) );
+
+
+//? Car(Cdr(listeEntiers(0)));
+
+l = [1, 2];
+/**
+// -------------------------------------------------------------------------------------------------
+// EXTENSION DEBUGGING:																	// TYPE RETOURNE
+// -------------------------------------------------------------------------------------------------
+f(x)       = x * ((3/6)+(2.5 * 2e-1));												// TYPE: NOMBRE
+g(a, b, c) = Car(Cdr(Cons((a + b * c / 10), ([Vrai, a, b, c]))));			// TYPE: BOOLEEN
+h(a, b, c) = Car(Cdr(Cons(ConcatChaines(a, b), [Vrai, a, b, 42*c])));	// TYPE: BOOLEEN
+
+E0 = Non( Non( Faux ) );
+E1 = Vrai;
+E2 = ["The", "quick", "brown", "fox"];
+L0 = [Vrai, 1, "Hello", [E0, 2, "World"], 12E3];
+L1 = [["Hello", 1, 2, 3]];
+L2 = [Vrai, 22, Sin(0), Cos(0), 4*0.5, f(3), E2, Non( Vrai ), "Compilateur", "Interprete"];
+L3 = [[[], "W"], 1, 2, 3, [4, 4, 4, [5, 5, 5, [6, 6, 6, []]]], 0];
+
+
+
+A = Car([["Hello", 1, 2, 3]]);														// TYPE: LISTE
+B = Car(L1);																				// TYPE: LISTE
+C = Car(Car([[Car([Vrai,2]), 1, 1], 2, 3]));										// TYPE: BOOLEEN
+D = Car(Car(Cdr(Cdr(Cdr(L0)))));														// TYPE: BOOLEEN
+F = Car(Car([["Grrrr...", 1, 2, 3], 0]));											// TYPE: CHAINE
+G = Car(Car(Cdr([[1, 2, 3], [Faux, 4]])));										// TYPE: BOOLEEN
+H = Car(Cdr(Car([[1, 2, 3], [Faux, 4]])));										// TYPE: NOMBRE
+I = Car(Cdr(Car(Cdr(["Bonjour", [45, 21], Vrai]))));							// TYPE: NOMBRE
+
+//**/

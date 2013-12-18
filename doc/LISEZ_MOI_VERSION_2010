@@ -1,0 +1,29 @@
+Forcé des 'CharPTR ("")' au lieu de '""' dans des affectations,
+devenues obsolètes avec GCC 4.x
+
+Scindé le dossier d'implantation en plusieurs sous dossiers
+dont un, "src", pour le  code source, lequel est également scindé
+en plusieurs sous-dossiers selon le genre de tâches de compilation
+Ventilé les différents fichiers C++, Flex et Bison dans ces sous-dossiers,
+en plaçant les fichiers Langues?*.h, .cc dans le sous-dossier correspondant
+
+Corrigé une dépendance de Syntaxe sur la Sémantique lors de l'emploi de Flex et Bison, 
+apparue lors de la scission 
+
+Remplacé les suffixes trop abrégés :
+	CPP	CPlusPlus
+	P		Predictif
+	F		Flex
+	B		Bison
+	FB		FlexBison
+	DR		DescenteRecursive
+	PDR	PredictifDescenteRecursive
+	
+Ajouté des accents dans certains messages en français
+
+Rebaptisé les cibles pour les 99 bouteilles de bière de manière plus explicite
+
+Ajouté des cibles spécifiques pour gérer la documentation
+plutôt que l'intégrer dans "all" et "clean"
+
+Pour les détails, voir LISEZ_MOI_ROLE_ET_NOM_DES_FICHIERS

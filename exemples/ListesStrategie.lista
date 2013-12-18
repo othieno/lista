@@ -1,0 +1,16 @@
+// Passage par valeur et par nom (inspire de SansFin.lista).
+ConsInfini(n0) =
+	Cons(
+		n0,
+		ConsInfini(n0 + 1)
+	);
+
+mystere(n0, n1) =
+	Si(
+		Egale(0, LongueurListe(n0)),
+		n0,
+		n1
+	);
+
+//? mystere([1, 2, 3, 4, 5, 6], ConsInfini(1));
+? mystere([], ConsInfini(1));

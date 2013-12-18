@@ -1,0 +1,311 @@
+// =========================================================================
+//	99BottlesOfBeer.README
+//	J. Menu - http://cui.unige.ch/DI/cours/CompInterpretes
+// =========================================================================
+
+
+To download the current Lista implementation:
+
+	http://cui.unige.ch/DI/cours/CompInterpretes/English.html
+
+The file README contains more information in English.
+
+
+# -------------------------------------------------------------------------
+99BottlesOfBeer.lista constains a Lista solution to the 99 bottles of beer 
+problem, with both  recursive and iterative versions.
+# -------------------------------------------------------------------------
+
+
+This program illustrates some features of Lista, a language that lets users
+define functions and call them.
+This language is the basis of a course taught by the author, see:
+	http://cui.unige.ch/DI/cours/CompInterpretes/
+
+Lista is an evolution of Formula, whose implementation is described in french in:
+	Compilateurs avec C++  
+	Jacques Menu, Addisson-Wesley, 1994
+	ISBN 2-87908-092-4
+The Lista implementation underwent a thorough source code clean up during 2006,
+making it multilingual and much more object oriented.
+
+In Lista:
+	-	the syntax, inspired from SML, is as simple as that of mathematical 
+		formulae;
+	-	the available types are Number (float), Boolean and (unbound) String
+	-	all TYPES ARE INFERED STATICALLY by the compilers according to identifier 
+		usage: there's no source code type notations nor runtime type checking;
+	-	available evaluation strategies are CALL BY VALUE, CALL BY NAME and 
+		CALL BY NEED, as chosen by compilers options;
+	-	functions definitions and evaluations, the latter introduced by the 
+		'?' token, can be freely interspersed;
+	-	execution can be done thru semantic graphs (i.e. abstract syntax trees)
+		traversal or by Pilum, a virtual stack machine whose implentation 
+		is supplied.
+
+Strangely enough, there are NO lists in the language: this is left as a project
+for the students of the Compilers & Interpreters course taught by the author.
+The same holds for local variables, embedded functions and the like, that can
+be added at will.
+
+The implementation of Lista consists of two compilers generating Pilum object
+code and a Pilum interpreter:
+	-	the first compiler combines a predictive scanner (lexical analyzer) 
+		with a recursive descent parser (syntax analyzer), all written in C++;
+	-	the second compiler couples a scanner synthesized by Flex with an 
+		LALR(1) parser synthesized by Bison, both of these tools generating 
+		C++ code;
+	-	the virtual machine interpreter, written in C++, executes binary code
+		read from files.
+
+Most of the semantic handling is done in a set of classes that are shared 
+by the two compilers.
+
+As a by-product of semantic analysis, the compilers can translate source code
+to another language, i.e. the built-in identifiers ar translated, leaving 
+the comments, string constants and source code layout unchanged.
+
+Currently supplied languages include french ("fr") and english ("en"), 
+and it is easy to add a new language as a class derived from "Langue".
+The cumbersome part is of course the translation of all the string constants...
+
+
+# -------------------------------------------------------------------------
+Type inference can be shown at work using compiler options
+# -------------------------------------------------------------------------
+
+ListaPredictifDescenteRecursive -l en -bl -sd 99BottlesOfBeer.lista
+
+...
+
+*** Lista code lexically     correct   ***
+*** Lista code syntactically correct   ***
+*** Lista code semantically  correct   ***
+
+Purging dictionary 'Main', containing:
+        'Main::ActionDescription' (s: 0): '(NumberType) -> StringType'
+        'Main::ActuallyRemainingBottlesAsString' (s: 0): '(NumberType) -> StringType'
+        'Main::BottlesNumberAsString' (s: 0): '(NumberType) -> StringType'
+        'Main::MoreThanOneBottlesLeftString' (s: 0): '(NumberType) -> StringType'
+        'Main::NeverEnding' (s: 0): '(NumberType) -> NumberType'
+        'Main::NoBottlesLeftString' (s: 0): '(NumberType) -> StringType'
+        'Main::OneBottleLeftString' (s: 0): '() -> StringType'
+        'Main::SingBottlesSong' (s: 0): '(NumberType, BooleanType, NumberType) -> VoidType'
+        'Main::SingBottlesSongIteratively' (s: 0): '(NumberType) -> VoidType'
+        'Main::SingBottlesSongRecursively' (s: 0): '(NumberType, NumberType) -> VoidType'
+        'Main::StatusDescription' (s: 0): '(NumberType) -> StringType'
+
+
+# -------------------------------------------------------------------------
+Details of type inference:
+# -------------------------------------------------------------------------
+
+pbg4_jmi menu > ./ListaFB -l en -ss -si -sd Inference.lista 
+
+Contens of source file 'Inference.lista':
+---------------------------------------------------------------
+nice_function (condition, n) =
+        If (
+                condition,
+                n + n,
+                n * n
+                );
+
+? nice_function (
+        ReadBoolean (
+                "Would you like to evaluate 'nice_function' as double (yes) or square (any other answer)?",
+                "yes"
+                ),
+        ReadNumber (
+                "What number shall we evaluate 'nice_function' with?")
+        );
+---------------------------------------------------------------
+
+[LogicalVariable_11 "function 'nice_function'" -> FREELogicalType] describes the type of fonction 'nice_function'
+
+[LogicalVariable_12 "parameter 'condition'" -> FREELogicalType] describes the type of parameter 'condition'
+
+[LogicalVariable_13 "parameter 'n'" -> FREELogicalType] describes the type of parameter 'n'
+
+
+--> Binding free logical variable [LogicalVariable_12 "parameter 'condition'" -> FREELogicalType] to value BooleanType
+
+
+--> Binding free logical variable [LogicalVariable_13 "parameter 'n'" -> FREELogicalType] to value NumberType
+
+--> Logical variable [LogicalVariable_13 "parameter 'n'" -> NumberType] is already bound to value NumberType
+--> Logical variable [LogicalVariable_13 "parameter 'n'" -> NumberType] is already bound to value NumberType
+--> Logical variable [LogicalVariable_13 "parameter 'n'" -> NumberType] is already bound to value NumberType
+
+--> Binding free logical variable [LogicalVariable_11 "function 'nice_function'" -> FREELogicalType] to value NumberType
+
+
+Purging dictionary 'nice_function', containing:
+        Formal parameter by value 'nice_function::condition': 'BooleanType', declared (e: 0, s:1)
+        Formal parameter by value 'nice_function::n': 'NumberType', declared (e: 0, s:1)
+--> Logical variable [LogicalVariable_6 "TypeChaine" -> StringType] is already bound to value StringType
+--> Logical variable [LogicalVariable_6 "TypeChaine" -> StringType] is already bound to value StringType
+--> Logical variable [LogicalVariable_5 "TypeBooleen" -> BooleanType] is already bound to value BooleanType
+--> Logical variable [LogicalVariable_6 "TypeChaine" -> StringType] is already bound to value StringType
+--> Logical variable [LogicalVariable_4 "TypeNombre" -> NumberType] is already bound to value NumberType
+
+Purging dictionary 'Evaluation_1', which is empty
+*** Lista code lexically     correct   ***
+*** Lista code syntactically correct   ***
+*** Lista code semantically  correct   ***
+
+Purging dictionary 'Main', containing:
+        'Main::nice_function' (s: 0): '(BooleanType, NumberType) -> NumberType'
+
+*** Pilum object code "Inference.valueFB" has been created ***
+
+*** Elapsed time: 0 second(s) ***
+
+
+# -------------------------------------------------------------------------
+A simple program showing the power of call by name/need:
+# -------------------------------------------------------------------------
+
+pbg4_jmi menu > ./ListaPredictifDescenteRecursive -g -es -sb -l en NeverEnding.lista
+
+Contents of source file 'NeverEnding.lista':
+---------------------------------------------------------------
+
+// A function that cannot be evaluated, whatever it's argument
+
+NeverEnding (n) =
+	1 + NeverEnding (n + 1);
+
+
+// A program that illustrates the virtues of call by name/need
+// Call by value will just defeat it!
+
+funct (m, n) =
+	If (
+		LessThan (m, 100),
+			m + 12,
+			n
+			);
+
+? funct (3 + 5, NeverEnding (7));
+---------------------------------------------------------------
+
+Beginning direct evaluation...
+Value:
+       20.000000
+-----------------
+
+*** Direct evaluation time: 0 second(s) ***
+
+*** Lista code lexically     correct   ***
+*** Lista code syntactically correct   ***
+*** Lista code semantically  correct   ***
+
+*** Pilum object code "NeverEnding.needPRD" has been created ***
+
+*** Elapsed time: 0 second(s) ***
+
+
+# -------------------------------------------------------------------------
+
+Call by name can be implemented thru (transitive) closures, that generalize 
+the principle behind it.
+This allows a block of code, that can have parameters, to be passed around 
+in parameters, returned by functions and stored in variables at will.
+
+Here is a Ruby 1.8.x version of our 'NeverEnding' program:
+# -------------------------------------------------------------------------
+
+
+#!/usr/bin/env ruby
+
+# =========================================================================
+#	NeverEnding.rb
+#	J. Menu - http://cui.unige.ch/DI/cours/CompInterpretes
+## =========================================================================
+
+
+#	The following functions are in fact methods in Ruby
+
+
+#	A function that cannot be evaluated, whatever it's argument
+
+def NeverEnding (n)
+	1 + NeverEnding(n + 1)
+end
+
+
+#	A function that illustrates the virtues of closures
+
+def funct (m, n)
+	if m.call < 100
+			m.call + 12
+	else
+			n.call
+	end
+end
+
+
+puts "\n==> An interesting programming example...\n\n"
+
+
+# Call by name will compute "funct" fine!
+
+puts "--> Calling 'funct' with closures, thus mimicking call by name"
+
+printf("%d\n\n", funct( lambda { || 3 + 5 }, lambda { || NeverEnding(7) }))
+
+
+# Call by value will just defeat it!
+
+puts "--> Calling 'funct' without closures, i.e. with mere call by value"
+
+printf("%d\n", funct(3 + 5, NeverEnding(7)))
+
+
+
+One can see the explicit parameterless anonymous functions that are in charge 
+of evaluating the arguments to 'funct' whenever needed according to the flow
+of control in the latter.
+In call by name parlance, such functions are called 'thunks'.
+
+
+The result produced by the execution is:
+
+pbg4_jmi menu > ./NeverEnding.rb 
+
+==> An interesting programming example...
+
+--> Calling 'funct' with closures, thus mimicking call by name
+20
+
+--> Calling 'funct' without closures, i.e. with mere call by value
+./NeverEnding.rb:17:in `NeverEnding': stack level too deep (SystemStackError)
+        from ./NeverEnding.rb:17:in `NeverEnding'
+        from ./NeverEnding.rb:17:in `NeverEnding'
+        from ./NeverEnding.rb:17:in `NeverEnding'
+        from ./NeverEnding.rb:17:in `NeverEnding'
+        from ./NeverEnding.rb:17:in `NeverEnding'
+        from ./NeverEnding.rb:17:in `NeverEnding'
+        from ./NeverEnding.rb:17:in `NeverEnding'
+        from ./NeverEnding.rb:17:in `NeverEnding'
+         ... 5527 levels...
+        from ./NeverEnding.rb:17:in `NeverEnding'
+        from ./NeverEnding.rb:17:in `NeverEnding'
+        from ./NeverEnding.rb:17:in `NeverEnding'
+        from ./NeverEnding.rb:46
+
+
+--
+
+# -------------------------------------------------------------------------
+First 99BottlesOfBeer.lista execution trace:
+# -------------------------------------------------------------------------
+
+
+
+# -------------------------------------------------------------------------
+Second 99BottlesOfBeer.lista execution trace:
+# -------------------------------------------------------------------------
+
+

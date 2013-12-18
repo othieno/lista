@@ -1,0 +1,51 @@
+A = [1, 2, 3];
+B = [1, 2, "trois", 2*2, [Vrai], A];
+C = Car(A);
+D = Cdr(B);
+F = ConcatListes(B, B);
+G = LongueurListe(B);
+H = Cons(2, A);
+I = Append(H, B);
+J = Car(Car([["Grrrr...", 1, 2, 3], 0]));
+K(x, y, z) = Append( x, Cons( y*x, Append( z+3, A ) ) );
+
+? A;
+? B;
+? C;
+? K(10, 20, 30);
+
+
+// Liste vide.
+ListeVide(L) =
+	Si(
+		Egale(0, LongueurListe(L)),
+		Vrai,
+		Faux
+	);
+
+// Inverser une liste.
+InverserListe(L) =
+	Si(
+		ListeVide(L),
+		L,
+		Append(Car(L), InverserListe(Cdr(L)))
+	);
+
+
+// Strategies d'evaluation.
+// Passage par valeur et par nom (inspire de SansFin.lista).
+ConsInfini(n0) =
+	Cons(
+		n0,
+		ConsInfini(n0 + 1)
+	);
+
+mystere(n0, n1) =
+	Si(
+		Egale(0, LongueurListe(n0)),
+		n0,
+		n1
+	);
+
+? mystere([], ConsInfini(1));
+//? mystere([1, 2, 3, 4, 5, 6], ConsInfini(1));

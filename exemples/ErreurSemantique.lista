@@ -1,0 +1,3 @@
+blark (x) = blark (x + 1);
+
+? blark (3);

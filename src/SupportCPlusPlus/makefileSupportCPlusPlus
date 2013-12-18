@@ -1,0 +1,87 @@
+# -------------------------------------------------------------------------
+#	Makefile pour SupportCPlusPlus
+#	J. Menu - 19/10/2010
+#
+#	Version $Id$ du $Date$
+# -------------------------------------------------------------------------
+
+
+# -------------------------------------------------------------------------
+#	Objets à construire
+# -------------------------------------------------------------------------
+
+OBJETS_SupportCPlusPlus = \
+	$(SUPPORT_CPLUSPLUS)/LanguesSupportCPlusPlus.o \
+	$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.o
+
+
+# -------------------------------------------------------------------------
+#	La cible à construire
+# -------------------------------------------------------------------------
+
+.PHONY : message_SupportCPlusPlus objets_SupportCPlusPlus
+
+message_SupportCPlusPlus:
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> objets_SupportCPlusPlus:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+
+objets_SupportCPlusPlus: \
+		message_SupportCPlusPlus \
+		$(OBJETS_SupportCPlusPlus)
+
+
+# -------------------------------------------------------------------------
+#	Langues
+# -------------------------------------------------------------------------
+
+$(SUPPORT_CPLUSPLUS)/LanguesSupportCPlusPlus.o : \
+		$(SUPPORT_CPLUSPLUS)/LanguesSupportCPlusPlus.cc \
+		$(SUPPORT_CPLUSPLUS)/LanguesSupportCPlusPlus.h \
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/DecodageDOptions.h \
+		$(MAKEFILE_SupportCPlusPlus)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	SupportCPlusPlus
+# -------------------------------------------------------------------------
+
+$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.o : \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.cc \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/LanguesSupportCPlusPlus.h \
+		$(MAKEFILE_SupportCPlusPlus)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	clean_SupportCPlusPlus
+# -------------------------------------------------------------------------
+
+.PHONY : clean_SupportCPlusPlus
+	
+clean_SupportCPlusPlus :
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> $@:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+	rm -f $(OBJETS_SupportCPlusPlus)
+	@echo ""

@@ -1,0 +1,29 @@
+? Seq (
+	EcrireChaine ("LongueurChaine (\"Hello World\") = "),
+	EcrireNombre (LongueurChaine ("Hello World")),
+	EcrireFinDeLigne ()
+	);
+
+? Seq (
+	EcrireChaine ("ContientChaine (\"Hello World\", \"hello\") = "),
+	EcrireBooleen (ContientChaine ("Hello World", "hello")),
+	EcrireFinDeLigne ()
+	);
+
+? Seq (
+	EcrireChaine ("ContientChaine (\"Hello World\", \"World\") = "),
+	EcrireBooleen (ContientChaine ("Hello World", "World")),
+	EcrireFinDeLigne ()
+	);
+
+? ConcatChaines ("HELLO", "WORLD");
+
+? Seq (
+	EcrireChaine ("RemplacerChaine (\"Hello World\", \"World\", \"Monde\") = "),
+	EcrireChaine (RemplacerChaine ("Hello World", "World", "Monde")),
+	EcrireFinDeLigne ()
+	);
+
+PlusChaines (ch1, ch2) = ConcatChaines (ch1, ch2);
+
+? PlusChaines ("Albert", "Einstein");

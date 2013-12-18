@@ -1,0 +1,8 @@
+carre (n) = n * n;
+
+? Somme (
+                i, 1, 5,
+                carre (i + carre (i))
+        );
+
+? Somme (i, 1, 5, (i + i*i) * (i + i*i));

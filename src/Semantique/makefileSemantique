@@ -1,0 +1,1549 @@
+# -------------------------------------------------------------------------
+#	Makefile pour Semantique
+#	J. Menu - 19/10/2010
+#
+#	Version $Id$ du $Date$
+# -------------------------------------------------------------------------
+
+
+# -------------------------------------------------------------------------
+#	Objets et exécutables à construire
+# -------------------------------------------------------------------------
+
+EXECUTABLES_Semantique = \
+	$(SEMANTIQUE)/ListaSemPredictifDescenteRecursive \
+	$(SEMANTIQUE)/ListaSemFlexBison
+
+
+OBJETS_Semantique = \
+	$(SEMANTIQUE)/LanguesSemantique.o \
+	$(SEMANTIQUE)/LanguesSemantique_SYNTHESE_PILUM.o \
+	\
+	$(SEMANTIQUE)/DescriptionDesTypes.o \
+	$(SEMANTIQUE)/DescrSemantique_SYNTHESE_PILUM.o \
+	\
+	$(SEMANTIQUE)/Identificateur.o \
+	\
+	$(SEMANTIQUE)/TableDesSymboles.o \
+	\
+	$(SEMANTIQUE)/ValeurLista.o \
+	\
+	$(SEMANTIQUE)/StrategiesDEvaluation.o \
+	$(SEMANTIQUE)/StrategiesDEvaluation_SYNTHESE_PILUM.o \
+	$(SEMANTIQUE)/ContexteDEvaluation.o \
+	$(SEMANTIQUE)/ContexteDEvaluation_SYNTHESE_PILUM.o \
+	\
+	$(SEMANTIQUE)/DescrSemantique.o \
+	\
+	$(SEMANTIQUE)/OperateursNAires.o \
+	$(SEMANTIQUE)/OperateursNAires_SYNTHESE_PILUM.o \
+	$(SEMANTIQUE)/AlgebreBooleenne.o \
+	$(SEMANTIQUE)/AlgebreBooleenne_SYNTHESE_PILUM.o \
+	$(SEMANTIQUE)/Logique.o \
+	$(SEMANTIQUE)/Logique_SYNTHESE_PILUM.o \
+	$(SEMANTIQUE)/Arithmetique.o \
+	$(SEMANTIQUE)/Arithmetique_SYNTHESE_PILUM.o \
+	$(SEMANTIQUE)/ChainesDeCaracteres.o \
+	$(SEMANTIQUE)/ChainesDeCaracteres_SYNTHESE_PILUM.o \
+	$(SEMANTIQUE)/EntreesSorties.o \
+	$(SEMANTIQUE)/EntreesSorties_SYNTHESE_PILUM.o \
+	$(SEMANTIQUE)/Comparaisons.o \
+	$(SEMANTIQUE)/Comparaisons_SYNTHESE_PILUM.o \
+	\
+	$(SEMANTIQUE)/Sequencements.o \
+	$(SEMANTIQUE)/Sequencements_SYNTHESE_PILUM.o \
+	\
+	$(SEMANTIQUE)/Si.o \
+	$(SEMANTIQUE)/Si_SYNTHESE_PILUM.o \
+	\
+	$(SEMANTIQUE)/Iterations.o \
+	$(SEMANTIQUE)/Iterations_SYNTHESE_PILUM.o \
+	\
+	$(SEMANTIQUE)/Listes.o \
+	$(SEMANTIQUE)/Listes_SYNTHESE_PILUM.o \
+	\
+	$(SEMANTIQUE)/ParametresFormels.o : \
+	$(SEMANTIQUE)/ParametresFormels_SYNTHESE_PILUM.o : \
+	$(SEMANTIQUE)/FonctionsUtilisateur.o \
+	$(SEMANTIQUE)/FonctionsUtilisateur_SYNTHESE_PILUM.o \
+	\
+	$(SEMANTIQUE)/SynthesePilumLista.o \
+	\
+	$(SEMANTIQUE)/AnalyseurSemantiqueLista.o \
+	$(SEMANTIQUE)/AnalyseurSemantiqueLista_SYNTHESE_PILUM.o \
+	\
+	$(SEMANTIQUE)/InitialiserSemantique.o \
+	\
+	$(SEMANTIQUE)/AnalyseurPredictifDescenteRecursiveLista.o \
+	$(SEMANTIQUE)/AnalyseurPredictifDescenteRecursiveLista_SYNTHESE_PILUM.o \
+	\
+	$(SEMANTIQUE)/SupportFlexBisonLista.o \
+	$(SEMANTIQUE)/SupportFlexBisonLista_SYNTHESE_PILUM.o \
+	\
+	$(SEMANTIQUE)/Semantique.tab.o \
+	$(SEMANTIQUE)/Semantique.tab_SYNTHESE_PILUM.o \
+	\
+	$(SEMANTIQUE)/AnalyseurListaFlexBison.o \
+	$(SEMANTIQUE)/AnalyseurListaFlexBison_SYNTHESE_PILUM.o \
+	\
+	$(SEMANTIQUE)/DecodageDOptionsSemantique.o \
+	$(SEMANTIQUE)/DecodageDOptionsSemantique_SYNTHESE_PILUM.o \
+	\
+	$(SEMANTIQUE)/SemantiqueMainPredictifDescenteRecursive.o \
+	$(SEMANTIQUE)/SemantiqueMainPredictifDescenteRecursive_SYNTHESE_PILUM.o \
+	\
+	$(SEMANTIQUE)/SemantiqueMainFlexBison.o \
+	$(SEMANTIQUE)/SemantiqueMainFlexBison_SYNTHESE_PILUM.o
+
+FICHIERS_SYNTHETISES_Semantique = \
+	$(SEMANTIQUE)/Semantique.yy.cc \
+	\
+	$(SEMANTIQUE)/Semantique.tab.cc \
+	$(SEMANTIQUE)/Semantique.tab.hh \
+	$(SEMANTIQUE)/Semantique.output
+
+
+# -------------------------------------------------------------------------
+#	La cible à construire
+# -------------------------------------------------------------------------
+
+.PHONY : message_Semantique executables_Semantique
+
+message_Semantique:
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> objets_Semantique:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+
+executables_Semantique: \
+		message_Semantique \
+		$(EXECUTABLES_Semantique)
+
+
+# -------------------------------------------------------------------------
+#	Compilation de la grammaire par Bison
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/Semantique.tab.cc \
+$(SEMANTIQUE)/Semantique.tab.hh : \
+		Semantique.Bison \
+		$(MAKEFILE)
+	@echo ""
+	bison \
+		-o $@ \
+		--defines --verbose --token-table --debug --yacc \
+		$<
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	LanguesSemantique
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/LanguesSemantique.o : \
+		$(SEMANTIQUE)/LanguesSemantique.cc \
+		$(SEMANTIQUE)/LanguesSemantique.h \
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.h \
+		$(LEXIQUE)/LanguesLexique.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE)
+	@echo ""
+
+
+$(SEMANTIQUE)/LanguesSemantique_SYNTHESE_PILUM.o : \
+		$(SEMANTIQUE)/LanguesSemantique.cc \
+		$(SEMANTIQUE)/LanguesSemantique.h \
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.h \
+		$(LEXIQUE)/LanguesLexique.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		-DSYNTHESE_PILUM \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	DescriptionDesTypes
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/DescriptionDesTypes.o : \
+		$(SEMANTIQUE)/DescriptionDesTypes.cc \
+		$(SEMANTIQUE)/DescriptionDesTypes.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS)
+	@echo ""
+
+
+
+# -------------------------------------------------------------------------
+#	DescrSemantique
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/DescrSemantique.o : \
+		$(SEMANTIQUE)/DescrSemantique.cc \
+		$(SEMANTIQUE)/DescrSemantique.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.h \
+		$(SEMANTIQUE)/PreDeclarationsSemantique.h \
+		$(SEMANTIQUE)/DescriptionDesTypes.h \
+		$(SEMANTIQUE)/LanguesSemantique.h \
+		$(SEMANTIQUE)/Listes.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE)
+	@echo ""
+
+
+$(SEMANTIQUE)/DescrSemantique_SYNTHESE_PILUM.o : \
+		$(SEMANTIQUE)/DescrSemantique.cc \
+		$(SEMANTIQUE)/DescrSemantique.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.h \
+		$(SEMANTIQUE)/PreDeclarationsSemantique.h \
+		$(SEMANTIQUE)/DescriptionDesTypes.h \
+		$(SEMANTIQUE)/LanguesSemantique.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		-DSYNTHESE_PILUM \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	ValeurLista
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/ValeurLista.o : \
+		$(SEMANTIQUE)/ValeurLista.cc \
+		$(SEMANTIQUE)/ValeurLista.h \
+		$(SEMANTIQUE)/DescriptionDesTypes.h \
+		$(SEMANTIQUE)/LanguesSemantique.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	Identificateur
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/Identificateur.o : \
+		$(SEMANTIQUE)/Identificateur.cc \
+		$(SEMANTIQUE)/Identificateur.h \
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/LanguesSemantique.h \
+		$(SEMANTIQUE)/DescriptionDesTypes.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	TableDesSymboles
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/TableDesSymboles.o : \
+		$(SEMANTIQUE)/TableDesSymboles.cc \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/LanguesSemantique.h \
+		$(SEMANTIQUE)/DescriptionDesTypes.h \
+		$(SEMANTIQUE)/PreDeclarationsSemantique.h \
+		$(SEMANTIQUE)/AnalyseurSemantiqueLista.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	SynthesePilumLista
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/SynthesePilumLista.o : \
+		$(SEMANTIQUE)/SynthesePilumLista.cc \
+		$(SEMANTIQUE)/SynthesePilumLista.h \
+		$(LEXIQUE)/LanguesLexique.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SYNTHESE_PILUM)/LanguesSynthesePilum.h \
+		$(SEMANTIQUE)/PreDeclarationsSemantique.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		-DSYNTHESE_PILUM \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	OperateursNAires
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/OperateursNAires.o : \
+		$(SEMANTIQUE)/OperateursNAires.cc \
+		$(SEMANTIQUE)/OperateursNAires.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/PreDeclarationsSemantique.h \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE)
+	@echo ""
+
+
+$(SEMANTIQUE)/OperateursNAires_SYNTHESE_PILUM.o : \
+		$(SEMANTIQUE)/OperateursNAires.cc \
+		$(SEMANTIQUE)/OperateursNAires.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/PreDeclarationsSemantique.h \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		-DSYNTHESE_PILUM \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	Les différents opérateurs et fonctions
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/AlgebreBooleenne.o : \
+		$(SEMANTIQUE)/AlgebreBooleenne.cc \
+		$(SEMANTIQUE)/AlgebreBooleenne.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE)
+	@echo ""
+
+$(SEMANTIQUE)/AlgebreBooleenne_SYNTHESE_PILUM.o : \
+		$(SEMANTIQUE)/AlgebreBooleenne.cc \
+		$(SEMANTIQUE)/AlgebreBooleenne.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		-DSYNTHESE_PILUM \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+$(SEMANTIQUE)/Arithmetique.o : \
+		$(SEMANTIQUE)/Arithmetique.cc \
+		$(SEMANTIQUE)/Arithmetique.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/OperateursNAires.h \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE)
+	@echo ""
+
+$(SEMANTIQUE)/Arithmetique_SYNTHESE_PILUM.o : \
+		$(SEMANTIQUE)/Arithmetique.cc \
+		$(SEMANTIQUE)/Arithmetique.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/OperateursNAires.h \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		-DSYNTHESE_PILUM \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+$(SEMANTIQUE)/Comparaisons.o : \
+		$(SEMANTIQUE)/Comparaisons.cc \
+		$(SEMANTIQUE)/Comparaisons.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/OperateursNAires.h \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE)
+	@echo ""
+
+$(SEMANTIQUE)/Comparaisons_SYNTHESE_PILUM.o : \
+		$(SEMANTIQUE)/Comparaisons.cc \
+		$(SEMANTIQUE)/Comparaisons.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/OperateursNAires.h \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		-DSYNTHESE_PILUM \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+$(SEMANTIQUE)/ChainesDeCaracteres.o : \
+		$(SEMANTIQUE)/ChainesDeCaracteres.cc \
+		$(SEMANTIQUE)/ChainesDeCaracteres.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/OperateursNAires.h \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE)
+	@echo ""
+
+$(SEMANTIQUE)/ChainesDeCaracteres_SYNTHESE_PILUM.o : \
+		$(SEMANTIQUE)/ChainesDeCaracteres.cc \
+		$(SEMANTIQUE)/ChainesDeCaracteres.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/OperateursNAires.h \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		-DSYNTHESE_PILUM \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+$(SEMANTIQUE)/EntreesSorties.o : \
+		$(SEMANTIQUE)/EntreesSorties.cc \
+		$(SEMANTIQUE)/EntreesSorties.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/OperateursNAires.h \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE)
+	@echo ""
+
+$(SEMANTIQUE)/EntreesSorties_SYNTHESE_PILUM.o : \
+		$(SEMANTIQUE)/EntreesSorties.cc \
+		$(SEMANTIQUE)/EntreesSorties.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/OperateursNAires.h \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		-DSYNTHESE_PILUM \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+# Jeremy OTHIENO:	Listes
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/Listes.o : \
+		$(SEMANTIQUE)/Listes.cc \
+		$(SEMANTIQUE)/Listes.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/OperateursNAires.h \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE)
+	@echo ""
+
+
+$(SEMANTIQUE)/Listes_SYNTHESE_PILUM.o : \
+		$(SEMANTIQUE)/Listes.cc \
+		$(SEMANTIQUE)/Listes.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/OperateursNAires.h \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		-DSYNTHESE_PILUM \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	Sequencements
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/Sequencements.o : \
+		$(SEMANTIQUE)/Sequencements.cc \
+		$(SEMANTIQUE)/Sequencements.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/OperateursNAires.h \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE)
+	@echo ""
+
+$(SEMANTIQUE)/Sequencements_SYNTHESE_PILUM.o : \
+		$(SEMANTIQUE)/Sequencements.cc \
+		$(SEMANTIQUE)/Sequencements.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/OperateursNAires.h \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		-DSYNTHESE_PILUM \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	Si
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/Si.o : \
+		$(SEMANTIQUE)/Si.cc \
+		$(SEMANTIQUE)/Si.h \
+		$(SEMANTIQUE)/LanguesSemantique.h \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(SEMANTIQUE)/FonctionsUtilisateur.h \
+		$(SEMANTIQUE)/AnalyseurSemantiqueLista.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE)
+	@echo ""
+
+$(SEMANTIQUE)/Si_SYNTHESE_PILUM.o : \
+		$(SEMANTIQUE)/Si.cc \
+		$(SEMANTIQUE)/Si.h \
+		$(SEMANTIQUE)/LanguesSemantique.h \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(SEMANTIQUE)/FonctionsUtilisateur.h \
+		$(SEMANTIQUE)/AnalyseurSemantiqueLista.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		-DSYNTHESE_PILUM \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	Iterations
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/Iterations.o : \
+		$(SEMANTIQUE)/Iterations.cc \
+		$(SEMANTIQUE)/Iterations.h \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(SEMANTIQUE)/LanguesSemantique.h \
+		$(SEMANTIQUE)/AnalyseurSemantiqueLista.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE)
+	@echo ""
+
+$(SEMANTIQUE)/Iterations_SYNTHESE_PILUM.o : \
+		$(SEMANTIQUE)/Iterations.cc \
+		$(SEMANTIQUE)/Iterations.h \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(SEMANTIQUE)/LanguesSemantique.h \
+		$(SEMANTIQUE)/AnalyseurSemantiqueLista.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		-DSYNTHESE_PILUM \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	StrategiesDEvaluation
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/StrategiesDEvaluation.o : \
+		$(SEMANTIQUE)/StrategiesDEvaluation.cc \
+		$(SEMANTIQUE)/StrategiesDEvaluation.h \
+		$(LEXIQUE)/LanguesLexique.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/PreDeclarationsSemantique.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE)
+	@echo ""
+
+$(SEMANTIQUE)/StrategiesDEvaluation_SYNTHESE_PILUM.o : \
+		$(SEMANTIQUE)/StrategiesDEvaluation.cc \
+		$(SEMANTIQUE)/StrategiesDEvaluation.h \
+		$(LEXIQUE)/LanguesLexique.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/PreDeclarationsSemantique.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		-DSYNTHESE_PILUM \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	ParametresFormels
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/ParametresFormels.o : \
+		$(SEMANTIQUE)/ParametresFormels.cc \
+		$(SEMANTIQUE)/ParametresFormels.h \
+		$(LEXIQUE)/LanguesLexique.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/PreDeclarationsSemantique.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE)
+	@echo ""
+
+$(SEMANTIQUE)/ParametresFormels_SYNTHESE_PILUM.o : \
+		$(SEMANTIQUE)/ParametresFormels.cc \
+		$(SEMANTIQUE)/ParametresFormels.h \
+		$(LEXIQUE)/LanguesLexique.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/PreDeclarationsSemantique.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		-DSYNTHESE_PILUM \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	ContexteDEvaluation
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/ContexteDEvaluation.o : \
+		$(SEMANTIQUE)/ContexteDEvaluation.cc \
+		$(SEMANTIQUE)/ContexteDEvaluation.h \
+		$(LEXIQUE)/LanguesLexique.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/PreDeclarationsSemantique.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	FonctionsUtilisateur
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/FonctionsUtilisateur.o : \
+		$(SEMANTIQUE)/FonctionsUtilisateur.cc \
+		$(SEMANTIQUE)/FonctionsUtilisateur.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/LanguesSemantique.h \
+		$(SEMANTIQUE)/PreDeclarationsSemantique.h \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(SEMANTIQUE)/AnalyseurSemantiqueLista.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE)
+	@echo ""
+
+$(SEMANTIQUE)/FonctionsUtilisateur_SYNTHESE_PILUM.o : \
+		$(SEMANTIQUE)/FonctionsUtilisateur.cc \
+		$(SEMANTIQUE)/FonctionsUtilisateur.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/LanguesSemantique.h \
+		$(SEMANTIQUE)/PreDeclarationsSemantique.h \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(SEMANTIQUE)/AnalyseurSemantiqueLista.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		-DSYNTHESE_PILUM \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	AnalyseurSemantiqueLista
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/AnalyseurSemantiqueLista.o : \
+		$(SEMANTIQUE)/AnalyseurSemantiqueLista.cc \
+		$(SEMANTIQUE)/AnalyseurSemantiqueLista.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/LanguesSemantique.h \
+		$(SEMANTIQUE)/OperateursNAires.h \
+		$(SEMANTIQUE)/AlgebreBooleenne.h \
+		$(SEMANTIQUE)/Arithmetique.h \
+		$(SEMANTIQUE)/ChainesDeCaracteres.h \
+		$(SEMANTIQUE)/Comparaisons.h \
+		$(SEMANTIQUE)/EntreesSorties.h \
+		$(SEMANTIQUE)/Sequencements.h \
+		$(SEMANTIQUE)/Si.h \
+		$(SEMANTIQUE)/Iterations.h \
+		$(SEMANTIQUE)/PreDeclarationsSemantique.h \
+		$(SEMANTIQUE)/FonctionsUtilisateur.h \
+		$(SEMANTIQUE)/Listes.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE)
+	@echo ""
+
+$(SEMANTIQUE)/AnalyseurSemantiqueLista_SYNTHESE_PILUM.o : \
+		$(SEMANTIQUE)/AnalyseurSemantiqueLista.cc \
+		$(SEMANTIQUE)/AnalyseurSemantiqueLista.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SEMANTIQUE)/LanguesSemantique.h \
+		$(SEMANTIQUE)/OperateursNAires.h \
+		$(SEMANTIQUE)/AlgebreBooleenne.h \
+		$(SEMANTIQUE)/Arithmetique.h \
+		$(SEMANTIQUE)/ChainesDeCaracteres.h \
+		$(SEMANTIQUE)/Comparaisons.h \
+		$(SEMANTIQUE)/EntreesSorties.h \
+		$(SEMANTIQUE)/Sequencements.h \
+		$(SEMANTIQUE)/Si.h \
+		$(SEMANTIQUE)/Iterations.h \
+		$(SEMANTIQUE)/PreDeclarationsSemantique.h \
+		$(SEMANTIQUE)/FonctionsUtilisateur.h \
+		$(SEMANTIQUE)/Listes.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		-DSYNTHESE_PILUM \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	AnalyseurListaFlexBison
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/AnalyseurListaFlexBison.o : \
+		$(SEMANTIQUE)/AnalyseurListaFlexBison.cc \
+		$(SEMANTIQUE)/AnalyseurListaFlexBison.h \
+		$(SUPPORT_FLEX_BISON)/SupportFlexBison.h \
+		$(SEMANTIQUE)/PreDeclarationsSemantique.h \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SUPPORT_FLEX_BISON) \
+			-I $(SYNTAXE) \
+			-I $(PILUM)
+	@echo ""
+
+$(SEMANTIQUE)/AnalyseurListaFlexBison_SYNTHESE_PILUM.o : \
+		$(SEMANTIQUE)/AnalyseurListaFlexBison.cc \
+		$(SEMANTIQUE)/AnalyseurListaFlexBison.h \
+		$(SUPPORT_FLEX_BISON)/SupportFlexBison.h \
+		$(SEMANTIQUE)/PreDeclarationsSemantique.h \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		-DSYNTHESE_PILUM \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SUPPORT_FLEX_BISON) \
+			-I $(SYNTAXE) \
+			-I $(PILUM) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	InitialiserSemantique
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/InitialiserSemantique.o : \
+		$(SEMANTIQUE)/InitialiserSemantique.cc \
+		$(SEMANTIQUE)/InitialiserSemantique.h \
+		$(SEMANTIQUE)/PreDeclarationsSemantique.h \
+		\
+		$(SEMANTIQUE)/DescriptionDesTypes.h \
+		$(SEMANTIQUE)/DescrSemantique.h \
+		$(SEMANTIQUE)/StrategiesDEvaluation.h \
+		\
+		AlgebreBooleenne.h \
+		Arithmetique.h \
+		\
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	DecodageDOptionsSemantique
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/DecodageDOptionsSemantique.o : \
+		$(SEMANTIQUE)/DecodageDOptionsSemantique.cc \
+		$(SEMANTIQUE)/DecodageDOptionsSemantique.h \
+		$(LEXIQUE)/DecodageDOptionsLexique.h \
+		$(SYNTAXE)/DecodageDOptionsSyntaxe.h \
+		$(SEMANTIQUE)/PreDeclarationsSemantique.h \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE)
+	@echo ""
+
+$(SEMANTIQUE)/DecodageDOptionsSemantique_SYNTHESE_PILUM.o : \
+		$(SEMANTIQUE)/DecodageDOptionsSemantique.cc \
+		$(SEMANTIQUE)/DecodageDOptionsSemantique.h \
+		$(LEXIQUE)/DecodageDOptionsLexique.h \
+		$(SYNTAXE)/DecodageDOptionsSyntaxe.h \
+		$(SEMANTIQUE)/PreDeclarationsSemantique.h \
+		$(SEMANTIQUE)/TableDesSymboles.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		-DSYNTHESE_PILUM \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	Analyses lexicale, syntaxique et semantique, evaluation directe
+#	(Flex et Bison)
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/SupportFlexBisonLista.o : \
+		$(SEMANTIQUE)/SupportFlexBisonLista.cc \
+		$(SEMANTIQUE)/SupportFlexBisonLista.h \
+		\
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		\
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.h \
+		\
+		$(LEXIQUE)/LanguesLexique.h \
+		\
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		\
+		$(PILUM)/Pilum.h \
+		\
+		$(SEMANTIQUE)/Semantique.tab.hh \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE) \
+			-I $(SUPPORT_FLEX_BISON) \
+			-I $(PILUM)
+	@echo ""
+
+$(SEMANTIQUE)/Semantique.tab.o : \
+		$(SEMANTIQUE)/Semantique.tab.cc \
+		$(SEMANTIQUE)/Semantique.tab.hh \
+		\
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		\
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.h \
+		\
+		$(SUPPORT_FLEX_BISON)/SupportFlexBison.h \
+		\
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		\
+		$(PILUM)/Pilum.h \
+		\
+		$(SEMANTIQUE)/LanguesSemantique.h \
+		$(SEMANTIQUE)/SupportFlexBisonLista.h \
+		$(SEMANTIQUE)/Semantique.yy.cc \
+		\
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE) \
+			-I $(SUPPORT_FLEX_BISON) \
+			-I $(PILUM)
+	@echo ""
+
+$(SEMANTIQUE)/SemantiqueMainFlexBison.o : \
+		$(SEMANTIQUE)/SemantiqueMainFlexBison.cc \
+		\
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		\
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.h \
+		\
+		$(SUPPORT_FLEX_BISON)/SupportFlexBison.h \
+		\
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		\
+		$(SYNTHESE_PILUM)/LanguesSynthesePilum.h \
+		\
+		$(PILUM)/LanguesPilum.h \
+		$(PILUM)/Pilum.h \
+		\
+		$(SEMANTIQUE)/LanguesSemantique.h \
+		$(SEMANTIQUE)/SupportFlexBisonLista.h \
+		$(SEMANTIQUE)/AnalyseurListaFlexBison.o \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE)  \
+			-I $(SYNTAXE) \
+			-I $(SUPPORT_FLEX_BISON) \
+			-I $(PILUM)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	ListaSemFlexBison
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/ListaSemFlexBison : \
+		$(SUPPORT_CPLUSPLUS)/LanguesSupportCPlusPlus.o \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.o \
+		\
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.o \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/DecodageDOptions.o \
+		\
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.o \
+		\
+		$(LEXIQUE)/LanguesLexique.o \
+		$(LEXIQUE)/DecodageDOptionsLexique.o \
+		\
+		$(SYNTAXE)/LanguesSyntaxe.o \
+		$(SYNTAXE)/DecodageDOptionsSyntaxe.o \
+		\
+		$(SUPPORT_FLEX_BISON)/SupportFlexBison.o \
+		\
+		$(SEMANTIQUE)/LanguesSemantique.o \
+		$(SEMANTIQUE)/SupportFlexBisonLista.o \
+		$(SEMANTIQUE)/DescriptionDesTypes.o \
+		$(SEMANTIQUE)/DescrSemantique.o \
+		$(SEMANTIQUE)/Identificateur.o \
+		$(SEMANTIQUE)/TableDesSymboles.o \
+		\
+		$(SEMANTIQUE)/OperateursNAires.o \
+		$(SEMANTIQUE)/AlgebreBooleenne.o \
+		$(SEMANTIQUE)/Arithmetique.o \
+		$(SEMANTIQUE)/ChainesDeCaracteres.o \
+		$(SEMANTIQUE)/Comparaisons.o \
+		$(SEMANTIQUE)/Si.o \
+		$(SEMANTIQUE)/EntreesSorties.o \
+		$(SEMANTIQUE)/Sequencements.o \
+		$(SEMANTIQUE)/Iterations.o \
+		$(SEMANTIQUE)/Listes.o \
+		\
+		$(SEMANTIQUE)/ParametresFormels.o \
+		$(SEMANTIQUE)/FonctionsUtilisateur.o \
+		\
+		$(SEMANTIQUE)/ValeurLista.o \
+		$(SEMANTIQUE)/ContexteDEvaluation.o \
+		$(SEMANTIQUE)/StrategiesDEvaluation.o \
+		\
+		$(SEMANTIQUE)/AnalyseurSemantiqueLista.o \
+		$(SEMANTIQUE)/InitialiserSemantique.o \
+		\
+		$(SEMANTIQUE)/Semantique.tab.o \
+		$(SEMANTIQUE)/AnalyseurListaFlexBison.o \
+		\
+		$(SEMANTIQUE)/DecodageDOptionsSemantique.o \
+		$(SEMANTIQUE)/SemantiqueMainFlexBison.o \
+		$(EXTENSIONS)/liste.o
+
+
+	@echo ""
+	$(CXX) \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$^
+	@echo ""
+	@ls -sal $@
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	Analyses lexicale, syntaxique et semantique, evaluation directe
+#	(predictive et descente recursive)
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/AnalyseurPredictifDescenteRecursiveLista.o : \
+		$(SEMANTIQUE)/AnalyseurPredictifDescenteRecursiveLista.cc \
+		$(SEMANTIQUE)/AnalyseurPredictifDescenteRecursiveLista.h \
+		\
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SYNTAXE)/AnalyseurDescendantLista.h \
+		\
+		$(SEMANTIQUE)/AlgebreBooleenne.h \
+		$(SEMANTIQUE)/Arithmetique.h \
+		$(SEMANTIQUE)/ChainesDeCaracteres.h \
+		$(SEMANTIQUE)/Comparaisons.h \
+		$(SEMANTIQUE)/EntreesSorties.h \
+		$(SEMANTIQUE)/Sequencements.h \
+		$(SEMANTIQUE)/Si.h \
+		$(SEMANTIQUE)/Iterations.h \
+		$(SEMANTIQUE)/Listes.h \
+		\
+		$(SEMANTIQUE)/AnalyseurSemantiqueLista.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE)  \
+			-I $(SYNTAXE)
+	@echo ""
+
+
+$(SEMANTIQUE)/SemantiqueMainPredictifDescenteRecursive.o : \
+		$(SEMANTIQUE)/SemantiqueMainPredictifDescenteRecursive.cc \
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		\
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.h \
+		\
+		$(LEXIQUE)/AnalyseurLexicalLista.h \
+		\
+		$(SYNTAXE)/AnalyseurDescendantLista.h \
+		\
+		$(SYNTHESE_PILUM)/LanguesSynthesePilum.h \
+		\
+		$(SEMANTIQUE)/LanguesSemantique.h \
+		$(SEMANTIQUE)/DecodageDOptionsSemantique.h \
+		$(SEMANTIQUE)/AnalyseurPredictifDescenteRecursiveLista.h \
+		\
+		$(PILUM)/Pilum.h \
+		\
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE)  \
+			-I $(SYNTAXE) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	ListaSemPredictifDescenteRecursive
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/ListaSemPredictifDescenteRecursive : \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.o \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/DecodageDOptions.o \
+		\
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.o \
+		$(SUPPORT_CPLUSPLUS)/LanguesSupportCPlusPlus.o \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.o \
+		\
+		$(LEXIQUE)/LanguesLexique.o \
+		$(LEXIQUE)/ProducteurDeCaracteres.o \
+		$(LEXIQUE)/FichierDeCaracteres.o \
+		$(LEXIQUE)/AnalyseurLexicalLista.o \
+		$(LEXIQUE)/DecodageDOptionsLexique.o \
+		\
+		$(SYNTAXE)/LanguesSyntaxe.o \
+		$(SYNTAXE)/AnalyseurDescendantLista.o \
+		$(SYNTAXE)/DecodageDOptionsSyntaxe.o \
+		\
+		$(SEMANTIQUE)/LanguesSemantique.o \
+		$(SEMANTIQUE)/DescriptionDesTypes.o \
+		$(SEMANTIQUE)/DescrSemantique.o \
+		$(SEMANTIQUE)/OperateursNAires.o \
+		$(SEMANTIQUE)/Identificateur.o \
+		$(SEMANTIQUE)/ParametresFormels.o \
+		$(SEMANTIQUE)/TableDesSymboles.o \
+		\
+		$(SEMANTIQUE)/ValeurLista.o \
+		$(SEMANTIQUE)/ContexteDEvaluation.o \
+		$(SEMANTIQUE)/StrategiesDEvaluation.o \
+		\
+		$(SEMANTIQUE)/AlgebreBooleenne.o \
+		$(SEMANTIQUE)/Arithmetique.o \
+		$(SEMANTIQUE)/ChainesDeCaracteres.o \
+		$(SEMANTIQUE)/EntreesSorties.o \
+		$(SEMANTIQUE)/Comparaisons.o \
+		$(SEMANTIQUE)/Si.o \
+		$(SEMANTIQUE)/Sequencements.o \
+		$(SEMANTIQUE)/Iterations.o \
+		$(SEMANTIQUE)/FonctionsUtilisateur.o \
+		$(SEMANTIQUE)/Listes.o \
+		\
+		$(SEMANTIQUE)/AnalyseurSemantiqueLista.o \
+		$(SEMANTIQUE)/InitialiserSemantique.o \
+		\
+		$(SEMANTIQUE)/AnalyseurPredictifDescenteRecursiveLista.o \
+		$(SEMANTIQUE)/DecodageDOptionsSemantique.o \
+		$(SEMANTIQUE)/SemantiqueMainPredictifDescenteRecursive.o \
+		$(EXTENSIONS)/liste.o
+	@echo ""
+	$(CXX) \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$^
+	@echo ""
+	@ls -sal $@
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	clean_Semantique
+# -------------------------------------------------------------------------
+
+.PHONY : clean_Semantique
+
+clean_Semantique :
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> $@:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+	rm -f \
+		$(FICHIERS_SYNTHETISES_Semantique) \
+		$(OBJETS_Semantique) \
+		$(EXECUTABLES_Semantique)
+	@echo ""

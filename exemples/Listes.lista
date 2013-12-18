@@ -1,0 +1,14 @@
+ff = Cons (10, Cons (20, Cons (30, Nil)));
+
+? EcrireListe (ff);
+
+LongueurListe (laListe) =
+	Si (
+		ListeVide (laListe),
+		0,
+		1 + LongueurListe (Cdr (laListe))
+		);
+		
+? LongueurListe (ff);
+
+? ListeVide (ff); 

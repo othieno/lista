@@ -1,0 +1,17 @@
+carre (n) = n * n;
+
+cube (s) = s * s * s;
+
+puissance6 (t) = carre (cube (t));
+
+? For (
+	i,
+	1, 3,
+	Seq (
+		WriteString ("--> puissance6 ("),
+		WriteNumber (i),
+		WriteString (") = "),
+		WriteNumber (puissance6 (i)),
+		WriteEndOfLine ()
+		)
+	);

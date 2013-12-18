@@ -1,0 +1,15 @@
+nice_function (condition, n) =
+	If (
+		condition,
+		n + n,
+		n * n
+		);
+
+? nice_function (
+	ReadBoolean (
+		"Would you like to evaluate 'nice_function' as double (yes) or square (any other answer)?",
+		"yes"
+		),
+	ReadNumber (
+		"What number shall we evaluate 'nice_function' with?")
+	);

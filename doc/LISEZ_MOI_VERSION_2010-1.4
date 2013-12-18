@@ -1,0 +1,53 @@
+Corrigé un bug dans Lista de référence 2010-1.3, 
+introduit lors de la ventilation des fichiers en plusieurs sous-dossiers:
+ les graphes sémantiques des constantes prédéfinies arithmétiques 
+et booléennes comme Pi et Vrai ne sont pas créés au début de la compilation...
+
+Le symptôme: compiler "?Pi;" avec ListaSem* ou les versions complètes du compilateur
+ conduit à une segmentation fault, car les variables globales correspondantes
+ comme "gValeurPi" sont encore à NULL.
+
+Si vous avez déjà commencé à travailler à votre projet en partant de la 1.3, 
+vous pouvez vous adapter comme indiquer ci-dessous.
+Les deux renommages et la suppression sont pour plus de propreté, 
+et la correction du makefile est pour le rendre correct :
+
+	- dans Arithmetique.h et .cc, remplacer InitialiaserArithmetique par InitialiserArithmetique;
+	- dans AlgebreBooleenne.h et .cc, remplacer InitialiaserAlgebreBooleenne par InitialiserAlgebreBooleenne;
+
+
+	- dans InitialiserSemantique.cc, ajouter:
+
+		#include "AlgebreBooleenne.h"
+
+		#include "Arithmetique.h"
+
+	  au début du fichier;
+
+
+	- dans InitialiserSemantique.cc, ajouter:
+
+		InitialiserArithmetique ();
+	
+		InitialiserAlgebreBooleenne ();
+
+	  à la fin de la fonction "InitialiserSemantique ()";
+
+	- dans Semantique.h et .cc, supprimer complètement la Fonction globale "InitialiserGlobalesSemantique", qui n'est pas appelée de toute manière.
+
+
+	- dans makefileSemantique, mettre comme prérequis pour "InitialiserSemantique.o" :
+
+		$(SEMANTIQUE)/InitialiserSemantique.o : \
+			$(SEMANTIQUE)/InitialiserSemantique.cc \
+			$(SEMANTIQUE)/InitialiserSemantique.h \
+			$(SEMANTIQUE)/PreDeclarationsSemantique.h \
+			\
+			$(SEMANTIQUE)/DescriptionDesTypes.h \
+			$(SEMANTIQUE)/DescrSemantique.h \
+			$(SEMANTIQUE)/StrategiesDEvaluation.h \
+			\
+			AlgebreBooleenne.h \
+			Arithmetique.h \
+			\
+			$(MAKEFILE_Semantique) 

@@ -1,0 +1,8 @@
+# =========================================================================
+#  .bashrc Lista - Version $Id$ du $Date$
+#  J. Menu - http://cui.unige.ch/DI/cours/CompInterpretes
+## =========================================================================
+
+alias   pdr='./ListaPDR -g'
+alias   fb='./ListaFB -g'
+alias   pil='./PILUM_DEBUG -g'

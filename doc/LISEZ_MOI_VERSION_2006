@@ -1,0 +1,40 @@
+				Fichier "GNU make" pour l'implantation $VERSION de Lista
+
+Les (grosses) différences avec les versions précédentes portent sur:
+
+	- un renommage des fichiers pour simplifier la prise de contact;
+
+	- une exploitation plus intensive de l'orientation objets (généricité,
+	  STL (Standard Template Library), foncteurs (functors);
+
+	- un toilettage de tout le code de l'implantation et une extension 
+	  du jeu d'instructions de Pilum, avec correction de quelques bugs 
+	  et harmonisation des options de compilation comme "-g" (groupées);
+
+	- l'ajout de nombreuses fonctionalités au langage de départ:
+		- commentaires a la C/C++;
+		- chaines de caractères, opérateurs et fonctions associées
+		- les corps des fonctions et évaluations sont des séquences 
+		  d'expressions séparées par des virgules 
+		  (il y a un "Seq" implicite autour);
+
+	- les identificateurs prédéfinis et l'interface utilisateur sont 
+	  bilingues français/anglais, y-compris la machine Pilum.
+	  Les langues sont choisies par leur nom usuel, comme l'option "-l en"
+	  des exécutables et la commande "l en" de Pilum.
+	  La langue par défaut est fixée par la variable LANGUE_PAR_DEFAUT 
+	  du "makefile" (les sources restent francophones, désolé!).
+	  Il est facile d'ajouter d'autres langues, 
+	  mais il faut tout de même traduire les nombreux textes...
+
+	- l'ajout d'une documentation créée par Doxygen, qui doit étre
+	  installé par ailleurs. On l'obtient par "make doc".
+
+Le projet devrait ainsi être plus facile a réaliser et prendre moins de temps.
+
+Dr Jacques Menu
+Chargé de cours
+CUI
+Université de Genève
+mailto:Jacques.Menu@cui.unige.ch
+http://cui.unige.ch/~menu

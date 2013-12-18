@@ -1,0 +1,5 @@
+lLcarre (n) = n * n;
+
+karre (p) = p * p;
+
+? carre (karre (LireNombre ("Pour quelle valeur voulez-vous calculer 'carre (karre)'?")));

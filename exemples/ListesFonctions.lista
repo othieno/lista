@@ -1,0 +1,8 @@
+A = [1, 2, 3];
+B = [1, 2, "trois", 2*2, [Vrai], A];
+C = Car(A);
+D = Cdr(B);
+F = ConcatListes(B, B);
+G = LongueurListe(B);
+H = Cons(2, A);
+I = Append(H, B);

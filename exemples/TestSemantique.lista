@@ -1,0 +1,5 @@
+carre (t) = t * t;
+cube (y) = y * carre (y);
+nand (p, q) = Non (Et (p, q));
+? cube (Sin (E));
+? nand (Vrai, Faux);

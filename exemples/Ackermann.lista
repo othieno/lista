@@ -1,0 +1,15 @@
+Ack (m, n) =
+        Si (
+                Egale (m, 0),
+                n + 1,
+                Si (
+                        Egale (n, 0),
+                        Ack (m - 1, 1),
+                        Ack (m - 1, Ack (m, n - 1))
+                        )
+                );
+
+? Ack (
+	LireNombre ("Premier argument de la fonction d'Ackermann"),
+	LireNombre ("Second argument de la fonction d'Ackermann ")
+	);

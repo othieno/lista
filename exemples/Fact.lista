@@ -1,0 +1,11 @@
+/* La bonne vieille version recursive de la factorielle */
+
+fact (n) =
+	Si (
+		InfEgale (n, 0),
+		1,
+		n * fact (n - 1)
+		);
+
+? fact (
+	LireNombre ("==> Pour quelle valeur voulez-vous calculer 'fact'?") );

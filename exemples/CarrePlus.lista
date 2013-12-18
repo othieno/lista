@@ -1,0 +1,3 @@
+CarrePlus (x, y) = x * x + y;
+
+? CarrePlus (LireNombre ("Pour quelle valeur voulez-vous calculer 'CarrePlus'?"), 6);

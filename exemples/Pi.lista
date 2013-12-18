@@ -1,0 +1,23 @@
+pi = 3.1415926;
+
+?pi;
+
+fact (n) =
+	Si (
+		InfEgale (n, 0),
+		1,
+		n * fact (n - 1)
+		);
+
+ptt =
+	Pour (
+			i, 1, 20,
+			Seq (
+				EcrireNombre (i),
+				EcrireChaine (": "),
+				EcrireNombre (fact (i)),
+				EcrireFinDeLigne ()
+				)
+			);
+			
+?ptt;

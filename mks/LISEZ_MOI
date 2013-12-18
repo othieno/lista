@@ -1,0 +1,6 @@
+Le dossier "mks" contient des fragments de makefiles
+
+Il sont inclus dans ceux des différents sous-dossiers de "src"
+au moyen de "include" selon les besoins
+
+"makefileCOMMUN.mk" est le minimun de base

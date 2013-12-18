@@ -1,0 +1,261 @@
+# -------------------------------------------------------------------------
+
+Les fichiers de l'implantation de Lista/Pilum sont regroupés dans des dossiers 
+par genre d'activité :
+
+	doc			la documentation sur l'implantation
+	examen		utilisé par "make examen" le jour de ce dernier
+	examples		exemples de code source Lista
+	include		contient "Types.h" et "Version.h"
+	mks			les fragments *.mk" importés par les "makefile"
+	shells		des alias pour les deux shells supportés, "bash" et "tcsh"
+	src			le code source de l'implantation,
+					avec les fichiers de gestion des langues correspondants
+					le cas échéant
+	bin			liens vers les exécutables dans les sous dossiers de "src"
+
+
+Sous-dossiers de "src" :
+
+	TypesEtVersion
+					les fichiers "Types.h" et "Version.h"
+	SupportCPlusPlus
+					différentes fonctionnalités, dont "MiseEnForme ()" 
+					pour produire des chaînes de caractères avec des arguments variés,
+					la gestion des entrées/sorties, la fonction "FHasard ()",
+					et les "VariableLogique" et "VariableLogiqueEntiere"
+	LanguesEtDecodageDOptions
+					gestion de base du multilinguisme
+					et du décodage des options des exécutables
+	LanguesPredefinis
+					tous les textes affichables concernant 
+					les identificateurs prédéfinis de Lista,
+					en français et en anglais
+	SupportFlex
+					compléments nécessaires pour les analyseurs lexicaux
+					synthétisés par Flex
+	Lexique
+					analyse lexicale de Lista
+	SupportFlexBison
+					compléments nécessaires pour les analyseurs lexicaux
+					et syntaxique synthétisés par Flex et Bison respectivement,
+					et devant coopérer
+	Syntaxe
+					analyse syntaxique de Lista
+	Pilum
+					l'interprète de la machine virtuelle éponyme
+	SynthesePilum
+					primitives de synthèse de code Pilum,
+					utilisée par les compilateurs complets
+					et "FonctionsImbriquees"
+	Semantique
+					analyse sémantique de Lista,
+					avec évaluation directe
+					et le cas échéant synthèse de code Pilum
+	FonctionsImbriquees
+					l'exemple Pascal éponyme, en version Pilum
+					synthétisée par du code ad-hoc
+	CompilateursComplets
+					les compilateurs complets,
+					soit "ListaFlexBison" et "ListaPredictifDescenteRecursive"
+
+Les "Support*" contiennent du code indépendant de Lista,
+les autres lui sont spécifiques.
+
+Le "makefile" d'un sous-dossier contient le nom de ce dernier en suffixe, pour aider à savoir ce qu'on est en train de voir ou de modifier!
+La même règle est utilisée pour les cibles à construire et les "clean*".
+
+Dans "LanguesEtDecodageDOptions" et "Semantique", il y a des fichiers "PreDeclarations*.h"
+pour régler les cas de dépendances mutuelles complexes entre les fichiers du dossier
+
+Dans "Semantique", les différents composants ont été placés dans des fichiers 
+regroupant par exemple "SiPredef", placé dans la tables des symboles,
+et "Si", nœud corresondant placé dans les graphes sémantiques.
+
+Pour ceux où cela est nécessaire, il existe les versions "*_SYNTHESE_PILUM.o".
+
+
+# -------------------------------------------------------------------------
+
+Les fichiers sources ont le rôle suivant :
+
+	Version.h :
+			numéro de la version des sources
+
+	Types.h :
+			typedefs pour abréger l'écriture
+			et paramétrer simplement l'ensemble
+
+	Langue*.h, Langue*.cc :
+			gestion du multilinguisme pour les options
+			des exécutables, l'interface utilisateur
+			et les commandes de la machine Pilum
+
+	DecodageDOptions*.h, DecodageDOptions*.cc :
+			gestion du décodage des options des exécutables,
+			s'appuyant sur le multilinguisme
+			
+	SupportCPP.h, .cc :
+			utilitaires généraux
+
+	FichierDeCaracteres.h, FichierDeCaracteres.cc, 
+	ProducteurDeCaracteres.h, ProducteurDeCaracteres.cc :
+			utilitaires pour l'analyse lexicale prédictive
+		
+	LexiquePredictif.h, LexiquePredictif.cc, 
+	LexiqueMainPredictif.cc :
+			analyse lexicale seule prédictive
+
+
+	SyntaxeDescenteRecursive.h, SyntaxeDescenteRecursive.cc, 
+	SyntaxeMainPredictifDescenteRecursive.cc :
+			analyse lexicale et syntaxique seules en descente récursive
+
+	SupportFlexBison.h, SupportFlexBison.cc, 
+	SyntaxeBison.Flex, SyntaxeBison.Bison, 
+	SyntaxeBison.tab.cc.output, 
+	SyntaxeMainFlexBison.cc :
+			analyse lexicale et syntaxique seules utilisant Flex et Bison
+
+	Semantique.h, Semantique.cc :
+			description sémantique des sources analyses,
+			gestion des types, 
+			table des symboles, identificateurs prédefinis,
+			évaluation directe (méthodes Evaluer ()),
+			synthèse du code si SYNTHESE_PILUM est défini
+			(méthodes Synthetiser ())
+
+	PredictifDescenteRecursiveLista.h, PredictifDescenteRecursiveLista.cc, 
+	SemantiqueMainPredictifDescenteRecursive.cc :
+			analyse lexicale et syntaxico-sémantique de Lista prédictive  
+			et en descente récursive respectivement,
+			synthèse du code si SYNTHESE_PILUM est défini
+
+	FlexBisonLista.h, FlexBisonLista.cc, 
+	Semantique.Flex, Semantique.Bison, 
+	Semantique.tab.cc.output, 
+	SemantiqueMainFlexBison.cc :
+			analyse lexicale et syntaxico-sémantique 
+			de Lista utilisant Flex et Bison respectivement,
+			options pour cette analyse
+
+	DecodageDeCommandesPilum.h, DecodageDeCommandesPilum.cc :
+	 		gestion du décodage des commandes de la machine Pilum
+
+	Pilum.h, Pilum.cc, 
+	PilumMain.cc :
+			la machine virtuelle Pilum
+
+	SynthesePilum.h, SynthesePilum.cc :
+			description des étiquettes et instruction,
+			synthétiseur de code Pilum,
+			options pour cette synthèse
+
+	FonctionsImbriquees.h, FonctionsImbriquees.cc, 
+	FonctionsImbriqueesMain.cc :
+			synthèse de code Pilum  
+			spécifiquement pour l'exemple de fonctions imbriquées en Pascal
+
+
+# -------------------------------------------------------------------------
+
+Les différents "makefile" importent par "include" des fragments spécialisés:
+
+	makefile99BouteillesDeBiere.mk	pour "make 99p" et "make "99d"
+	makefileAll.mk							pour "make all"
+	makefileBison.mk						pour les "makefile" utilisant Bison
+	makefileCPlusPlus.mk					pour les variables "CPLUSPLUS" et "OPTIONS_CPLUSPLUS"
+	makefileClean.mk						pour "make clean"
+	makefileDocumentation.mk			pour "make doc"
+	makefileExamen.mk						pour "make examen"
+	makefileExecutables.mk				pour construire tous les exécutables d'un coup
+	makefileFlex.mk						pour les "makefile" utilisant Flex
+	makefileInstall.mk					pour "make install"
+	makefileLangues.mk					pour la gestion du multilinguisme
+	makefileSemantique.mk				pour la variable "OPTIONS_STRATEGIE"
+	makefileTest.mk						pour "make test"
+
+
+# -------------------------------------------------------------------------
+
+Les noms des exécutables des analyseurs/compilateurs commencent par "Lista":
+
+	- "ListaPredictifDescenteRecursive" est la version complète du compilateur
+	  utilisant les méthodes prédictive (lexique) et descente récursive (syntaxe),
+	  complètement manuellement;
+	- "pdr" est un lien symbolique vers ListaPredictifDescenteRecursive;
+
+	- "ListaFlexBison" est la version du compilateur où les analyses lexicales 
+	  et syntaxico-sémantique sont sp;cifiees dans une description du langage
+	  trait;e par Flex et Bison, respectivement;
+	- "fb" est un lien symbolique vers ListaFlexBison;
+
+	- ces deux versions implantent le même langage 
+	  avec les mêmes options de lancement du compilateur, 
+	  voir leur option "-h";
+	- on les construit simplement par "make base".
+
+
+De plus, pour les besoins du cours, 
+on peut construire des versions "incomplètes":
+
+	- un fragment "Lex" dans le nom indique la seule analyse lexicale;
+	- un fragment "Synt" dans le nom indique les analyses lexicale et syntaxique;
+	- un fragment "Sem" dans le nom indique les analyses lexicale, syntaxique
+	  et sémantique, ainsi que l'exécution directe des graphes sémantiques;
+
+	- un fragment "Predictif" indique l'analyse lexicale prédictive;
+	- un fragment "DescenteRecursive" indique l'analyse syntaxique par descente récursive;
+
+	- une terminaison en "Flex" indique que l'analyseur lexical 
+	  a été synthétisé par Flex;
+	- une terminaison en "Bison" indique que l'analyseur syntaxique
+	  a été synthétisé par Bison.
+	  Tout l'aspect sémantique est commun 
+	  avec les versions sans la terminaison "Bison";
+
+	- on construit simplement ces versions incomplètes par "make all".
+
+La synthèse de code Pilum est greffée sur l'analyseur sémantique 
+par compilation conditionnelle, selon que symbole "SYNTHESE_PILUM" 
+est défini ou non a la compilation des sources C++.
+
+
+Pilum est la machine virtuelle qui peut exécuter du code binaire 
+placé dans des fichiers:
+
+	- la convention est de nommer ces dernières en 
+	  ".valeur*", ".nom*" ou ".besoin*",
+	  selon le mode de passage de parametres choisi;
+	
+	- la encore, une terminaison en "PredictifDescenteRecursive" ou "FlexBison" 
+	  en plus indique qu'elle a été écrite manuellement, 
+	  respectivement synthétisée par Flex et Bison;
+
+"PILUM_DEBUG" est une version qui fait des tests intensifs 
+sur les valeurs manipulées par la machine virtuelle avant de les utiliser.
+Là encore, cela est fait par compilation conditionnelle, 
+contrôlée par le symbole "DEBUG_PILUM"
+
+"FonctionsImbriquees" illustre la synthèse de code Pilum 
+pour l'exemple du cours écrit en Pascal, au moyen d'un programme ad-hoc. 
+Le résultat est équivalent a une compilation à la main 
+de cet exemple Pascal particulier en du code Pilum.
+
+
+La gestion des langues permet de définir la langue des identificateurs 
+prédéfinis, avec une langue par défaut choisie dans le "makefile",
+et une langue courante choisie au moyen d'une option 
+au lancement des exécutables,
+ou d'une commande dans le cas de la machine Pilum.
+
+De plus, les exécutables faisant l'analyse sémantique 
+offrent une option de traduction automatique des codes sources Lisa, 
+produisant sur la sortie standard une version du code source traduite 
+dans une autre langue.
+La mise en page, les commentaires et les constantes de chaines de caractères 
+ne sont pas modifies par cette traduction.
+
+Les langues supportées actuellement sont le français et l'anglais, 
+et il est facile d'en ajouter d'autres 
+en dupliquant de ce qui est fait pour ces deux dernières.

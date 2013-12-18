@@ -1,0 +1,67 @@
+# -------------------------------------------------------------------------
+#	Makefile pour la gestion des LanguesPredefinis
+#	J. Menu - 19/10/2010
+#
+#	Version $Id$ du $Date$
+# -------------------------------------------------------------------------
+
+
+# -------------------------------------------------------------------------
+#	Objets à construire
+# -------------------------------------------------------------------------
+
+OBJETS_LanguesPredefinis = \
+	$(LANGUES_PREDEFINIS)/LanguesPredefinis.o
+
+
+# -------------------------------------------------------------------------
+#	La cible à construire
+# -------------------------------------------------------------------------
+
+.PHONY : message_LanguesPredefinis objets_LanguesPredefinis
+
+message_LanguesPredefinis:
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> objets_LanguesPredefinis:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+
+objets_LanguesPredefinis: \
+		message_LanguesPredefinis \
+		$(OBJETS_LanguesPredefinis)
+
+
+# -------------------------------------------------------------------------
+#	Langues
+# -------------------------------------------------------------------------
+
+$(LANGUES_PREDEFINIS)/LanguesPredefinis.o : \
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.cc \
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.h \
+		$(TYPES_ET_VERSION)/Types.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		$(SUPPORT_CPLUSPLUS)/LanguesSupportCPlusPlus.h \
+		$(MAKEFILE_LanguesEtDecodageDOptions)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	clean_LanguesPredefinis
+# -------------------------------------------------------------------------
+
+.PHONY : clean_LanguesPredefinis
+
+clean_LanguesPredefinis :
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> $@:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+	rm -f $(OBJETS_LanguesPredefinis)
+	@echo ""

@@ -1,0 +1,397 @@
+# -------------------------------------------------------------------------
+#	Makefile pour CompilateursComplets
+#	J. Menu - 19/10/2010
+#
+#	Version $Id$ du $Date$
+# -------------------------------------------------------------------------
+
+
+# -------------------------------------------------------------------------
+#	Objets et exécutables à construire
+# -------------------------------------------------------------------------
+
+EXECUTABLES_CompilateursComplets = \
+	$(COMPILATEURS_COMPLETS)/ListaPredictifDescenteRecursive \
+	$(COMPILATEURS_COMPLETS)/ListaFlexBison
+
+
+# -------------------------------------------------------------------------
+#	La cible à construire
+# -------------------------------------------------------------------------
+
+.PHONY : message_CompilateursComplets executables_CompilateursComplets
+
+message_CompilateursComplets:
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> objets_CompilateursComplets:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+
+executables_CompilateursComplets: \
+		message_CompilateursComplets \
+		$(EXECUTABLES_CompilateursComplets)
+
+
+# -------------------------------------------------------------------------
+#	Analyses lexicale, syntaxique et semantique,
+#	evaluation directe
+#	et synthese de code Pilum
+#	(Flex et Bison)
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/SupportFlexBisonLista_SYNTHESE_PILUM.o : \
+		$(SEMANTIQUE)/SupportFlexBisonLista.cc \
+		$(SEMANTIQUE)/SupportFlexBisonLista.h \
+		\
+		$(TYPES_ET_VERSION)/Types.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		\
+		$(SEMANTIQUE)/Semantique.tab.hh \
+		\
+		$(PILUM)/Pilum.h \
+		\
+		$(SYNTHESE_PILUM)/SynthesePilum.h \
+		\
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+		-DSYNTHESE_PILUM \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SUPPORT_FLEX_BISON) \
+			-I $(SYNTAXE) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+$(SEMANTIQUE)/Semantique.tab_SYNTHESE_PILUM.o : \
+		$(SEMANTIQUE)/Semantique.tab.cc \
+		$(SEMANTIQUE)/Semantique.yy.cc \
+		\
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.h \
+		\
+		$(SUPPORT_FLEX_BISON)/SupportFlexBison.h \
+		\
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		\
+		$(SEMANTIQUE)/LanguesSemantique.h \
+		$(SEMANTIQUE)/SupportFlexBisonLista.h \
+		\
+		$(PILUM)/Pilum.h \
+		\
+		$(SYNTHESE_PILUM)/SynthesePilum.h \
+		\
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+		-DSYNTHESE_PILUM \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE) \
+			-I $(SUPPORT_FLEX_BISON) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+$(SEMANTIQUE)/SemantiqueMainFlexBison_SYNTHESE_PILUM.o : \
+		$(SEMANTIQUE)/SemantiqueMainFlexBison.cc \
+		\
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.h \
+		\
+		$(SUPPORT_FLEX_BISON)/SupportFlexBison.h \
+		\
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		\
+		$(PILUM)/LanguesPilum.h \
+		$(PILUM)/Pilum.h \
+		\
+		$(SYNTHESE_PILUM)/SynthesePilum.h \
+		\
+		$(SEMANTIQUE)/LanguesSemantique.h \
+		$(SEMANTIQUE)/SupportFlexBisonLista.h \
+		$(SEMANTIQUE)/SynthesePilumLista.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+		-DSYNTHESE_PILUM \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE) \
+			-I $(SUPPORT_FLEX_BISON) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	ListaFlexBison
+# -------------------------------------------------------------------------
+
+$(COMPILATEURS_COMPLETS)/ListaFlexBison : \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.o \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/DecodageDOptions.o \
+		\
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.o \
+		\
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.o \
+		$(SUPPORT_CPLUSPLUS)/LanguesSupportCPlusPlus.o \
+		\
+		$(LEXIQUE)/LanguesLexique.o \
+		$(LEXIQUE)/DecodageDOptionsLexique.o \
+		\
+		$(SUPPORT_FLEX_BISON)/SupportFlexBison.o \
+		\
+		$(SYNTAXE)/LanguesSyntaxe.o \
+		$(SYNTAXE)/DecodageDOptionsSyntaxe.o \
+		\
+		$(SYNTHESE_PILUM)/LanguesSynthesePilum.o \
+		$(SYNTHESE_PILUM)/SynthesePilum.o \
+		\
+		$(PILUM)/LanguesPilum.o \
+		$(PILUM)/Pilum_AVEC_DEBUG.o \
+		$(PILUM)/DecodageDeCommandesPilum.o \
+		\
+		$(SEMANTIQUE)/LanguesSemantique_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/DescriptionDesTypes.o \
+		$(SEMANTIQUE)/Identificateur.o \
+		$(SEMANTIQUE)/DescrSemantique_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/OperateursNAires_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/ParametresFormels_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/TableDesSymboles.o \
+		\
+		$(SEMANTIQUE)/ValeurLista.o \
+		$(SEMANTIQUE)/ContexteDEvaluation.o \
+		\
+		$(SEMANTIQUE)/StrategiesDEvaluation_SYNTHESE_PILUM.o \
+		\
+		$(SEMANTIQUE)/AlgebreBooleenne_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/Arithmetique_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/ChainesDeCaracteres_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/EntreesSorties_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/Comparaisons_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/Si_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/Sequencements_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/Iterations_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/Listes_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/FonctionsUtilisateur_SYNTHESE_PILUM.o \
+		\
+		$(SEMANTIQUE)/AnalyseurSemantiqueLista_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/AnalyseurListaFlexBison_SYNTHESE_PILUM.o \
+		\
+		$(SEMANTIQUE)/InitialiserSemantique.o \
+		\
+		$(SEMANTIQUE)/SynthesePilumLista.o \
+		\
+		$(SEMANTIQUE)/SupportFlexBisonLista_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/Semantique.tab_SYNTHESE_PILUM.o \
+		\
+		$(SEMANTIQUE)/DecodageDOptionsSemantique_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/SemantiqueMainFlexBison_SYNTHESE_PILUM.o \
+		$(EXTENSIONS)/liste.o
+	@echo ""
+	$(CXX) \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		-DSYNTHESE_PILUM \
+		$^
+	@echo ""
+	@ls -sal $@
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	Analyses lexicale, syntaxique et semantique, evaluation directe
+#	et synthese de code Pilum
+#	(predictive et descente recursive)
+# -------------------------------------------------------------------------
+
+$(SEMANTIQUE)/AnalyseurPredictifDescenteRecursiveLista_SYNTHESE_PILUM.o : \
+		$(SEMANTIQUE)/AnalyseurPredictifDescenteRecursiveLista.cc \
+		$(SEMANTIQUE)/AnalyseurPredictifDescenteRecursiveLista.h \
+		\
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.h \
+		\
+		$(LEXIQUE)/AnalyseurLexicalLista.h \
+		\
+		$(SYNTAXE)/AnalyseurDescendantLista.h \
+		\
+		$(PILUM)/Pilum.h \
+		\
+		$(SYNTHESE_PILUM)/LanguesSynthesePilum.h \
+		$(SYNTHESE_PILUM)/SynthesePilum.h \
+		\
+		$(SEMANTIQUE)/SynthesePilumLista.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+		-DSYNTHESE_PILUM \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+$(SEMANTIQUE)/SemantiqueMainPredictifDescenteRecursive_SYNTHESE_PILUM.o : \
+		$(SEMANTIQUE)/SemantiqueMainPredictifDescenteRecursive.cc \
+		\
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.h \
+		\
+		$(LEXIQUE)/AnalyseurLexicalLista.h \
+		\
+		$(SYNTAXE)/AnalyseurDescendantLista.h \
+		\
+		$(PILUM)/LanguesPilum.h \
+		$(PILUM)/Pilum.h \
+		\
+		$(SYNTHESE_PILUM)/LanguesSynthesePilum.h \
+		$(SYNTHESE_PILUM)/SynthesePilum.h \
+		\
+		$(SEMANTIQUE)/LanguesSemantique.h \
+		$(SEMANTIQUE)/AnalyseurPredictifDescenteRecursiveLista.h \
+		$(MAKEFILE_Semantique)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$(OPTIONS_STRATEGIE) \
+		-DSYNTHESE_PILUM \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	ListaPredictifDescenteRecursive
+# -------------------------------------------------------------------------
+
+$(COMPILATEURS_COMPLETS)/ListaPredictifDescenteRecursive : \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.o \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/DecodageDOptions.o \
+		\
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.o \
+		$(SUPPORT_CPLUSPLUS)/LanguesSupportCPlusPlus.o \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.o \
+		\
+		$(LEXIQUE)/LanguesLexique.o \
+		$(LEXIQUE)/ProducteurDeCaracteres.o \
+		$(LEXIQUE)/FichierDeCaracteres.o \
+		$(LEXIQUE)/AnalyseurLexicalLista.o \
+		$(LEXIQUE)/DecodageDOptionsLexique.o \
+		\
+		$(SYNTAXE)/LanguesSyntaxe.o \
+		$(SYNTAXE)/AnalyseurDescendantLista.o \
+		$(SYNTAXE)/DecodageDOptionsSyntaxe.o \
+		\
+		$(PILUM)/LanguesPilum.o \
+		$(PILUM)/Pilum_AVEC_DEBUG.o \
+		$(PILUM)/DecodageDeCommandesPilum.o \
+		\
+		$(SYNTHESE_PILUM)/LanguesSynthesePilum.o \
+		$(SYNTHESE_PILUM)/SynthesePilum.o \
+		\
+		$(SEMANTIQUE)/LanguesSemantique_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/DescriptionDesTypes.o \
+		$(SEMANTIQUE)/Identificateur.o \
+		$(SEMANTIQUE)/DescrSemantique_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/OperateursNAires_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/ParametresFormels_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/TableDesSymboles.o \
+		\
+		$(SEMANTIQUE)/ValeurLista.o \
+		$(SEMANTIQUE)/ContexteDEvaluation.o \
+		\
+		$(SEMANTIQUE)/StrategiesDEvaluation_SYNTHESE_PILUM.o \
+		\
+		$(SEMANTIQUE)/AlgebreBooleenne_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/Arithmetique_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/ChainesDeCaracteres_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/EntreesSorties_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/Comparaisons_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/Si_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/Sequencements_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/Iterations_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/Listes_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/FonctionsUtilisateur_SYNTHESE_PILUM.o \
+		\
+		$(SEMANTIQUE)/AnalyseurSemantiqueLista_SYNTHESE_PILUM.o \
+		\
+		$(SEMANTIQUE)/InitialiserSemantique.o \
+		\
+		$(SEMANTIQUE)/SynthesePilumLista.o \
+		\
+		$(SEMANTIQUE)/AnalyseurPredictifDescenteRecursiveLista_SYNTHESE_PILUM.o \
+		\
+		$(SEMANTIQUE)/DecodageDOptionsSemantique_SYNTHESE_PILUM.o \
+		$(SEMANTIQUE)/SemantiqueMainPredictifDescenteRecursive_SYNTHESE_PILUM.o \
+		$(EXTENSIONS)/liste.o
+
+	@echo ""
+	$(CXX) \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$^
+	@echo ""
+	@ls -sal $@
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	clean_CompilateursComplets
+# -------------------------------------------------------------------------
+
+.PHONY : clean_CompilateursComplets
+
+clean_CompilateursComplets :
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> $@:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+	rm -f \
+		$(EXECUTABLES_CompilateursComplets)
+	@echo ""

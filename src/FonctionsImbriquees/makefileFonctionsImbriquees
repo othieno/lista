@@ -1,0 +1,225 @@
+# -------------------------------------------------------------------------
+#	Makefile pour FonctionsImbriquees
+#	J. Menu - 19/10/2010
+#
+#	Version $Id$ du $Date$
+# -------------------------------------------------------------------------
+
+
+# -------------------------------------------------------------------------
+#	Objets et exécutables à construire
+# -------------------------------------------------------------------------
+
+EXECUTABLE_FonctionsImbriquees = \
+	$(FONCTIONS_IMBRIQUEES)/FonctionsImbriquees
+
+OBJETS_FonctionsImbriquees = \
+	$(FONCTIONS_IMBRIQUEES)/LanguesFonctionsImbriquees.o \
+	\
+	$(FONCTIONS_IMBRIQUEES)/FonctionsImbriquees.o \
+	$(FONCTIONS_IMBRIQUEES)/DecodageDOptionsFonctionsImbriquees.o \
+	$(FONCTIONS_IMBRIQUEES)/FonctionsImbriqueesMain.o
+
+FICHIERS_FonctionsImbriquees = \
+	$(OBJETS_FonctionsImbriquees) \
+	$(EXECUTABLE_FonctionsImbriquees)
+
+
+# -------------------------------------------------------------------------
+#	La cible à construire
+# -------------------------------------------------------------------------
+
+.PHONY : message_FonctionsImbriquees executable_FonctionsImbriquees fi
+
+message_FonctionsImbriquees:
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> executable_FonctionsImbriquees:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+
+
+executable_FonctionsImbriquees: \
+		message_FonctionsImbriquees \
+		$(EXECUTABLE_FonctionsImbriquees)
+
+fi : \
+		executable_FonctionsImbriquees
+
+
+# -------------------------------------------------------------------------
+#	Langues
+# -------------------------------------------------------------------------
+
+$(FONCTIONS_IMBRIQUEES)/LanguesFonctionsImbriquees.o : \
+		$(FONCTIONS_IMBRIQUEES)/LanguesFonctionsImbriquees.cc \
+		$(FONCTIONS_IMBRIQUEES)/LanguesFonctionsImbriquees.h \
+		\
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.h \
+		\
+		$(PILUM)/Pilum.h \
+		\
+		$(SYNTHESE_PILUM)/LanguesSynthesePilum.h \
+		$(SYNTHESE_PILUM)/SynthesePilum.h
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	DecodageDOptionsFonctionsImbriquees
+# -------------------------------------------------------------------------
+
+$(FONCTIONS_IMBRIQUEES)/DecodageDOptionsFonctionsImbriquees.o : \
+		$(FONCTIONS_IMBRIQUEES)/DecodageDOptionsFonctionsImbriquees.cc \
+		$(FONCTIONS_IMBRIQUEES)/DecodageDOptionsFonctionsImbriquees.h \
+		\
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/DecodageDOptions.h \
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.h \
+		\
+		$(FONCTIONS_IMBRIQUEES)/LanguesFonctionsImbriquees.h \
+		$(MAKEFILE_FonctionsImbriquees)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	Synthese de code binaire Pilum pour FonctionsImbriquees
+# -------------------------------------------------------------------------
+
+$(FONCTIONS_IMBRIQUEES)/FonctionsImbriquees.o : \
+		$(FONCTIONS_IMBRIQUEES)/FonctionsImbriquees.cc \
+		$(FONCTIONS_IMBRIQUEES)/FonctionsImbriquees.h \
+		\
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)//SupportCPlusPlus.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		\
+		$(PILUM)/Pilum.h \
+		\
+		$(SYNTHESE_PILUM)/LanguesSynthesePilum.h \
+		$(SYNTHESE_PILUM)/SynthesePilum.h
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+$(FONCTIONS_IMBRIQUEES)/FonctionsImbriqueesMain.o : \
+		$(FONCTIONS_IMBRIQUEES)/FonctionsImbriqueesMain.cc \
+		\
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.h \
+		\
+		$(PILUM)/LanguesPilum.h \
+		$(PILUM)/Pilum.h \
+		\
+		$(SYNTHESE_PILUM)/LanguesSynthesePilum.h \
+		$(SYNTHESE_PILUM)/SynthesePilum.h \
+		\
+		$(FONCTIONS_IMBRIQUEES)/LanguesFonctionsImbriquees.h \
+		$(FONCTIONS_IMBRIQUEES)/FonctionsImbriquees.h
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(PILUM) \
+			-I $(SYNTHESE_PILUM)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	FonctionsImbriquees
+# -------------------------------------------------------------------------
+
+$(FONCTIONS_IMBRIQUEES)/FonctionsImbriquees : \
+		$(SUPPORT_CPLUSPLUS)/LanguesSupportCPlusPlus.o \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.o \
+		\
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.o \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/DecodageDOptions.o \
+		\
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.o \
+		\
+		$(EXTENSIONS)/liste.o \
+		\
+		$(PILUM)/LanguesPilum.o \
+		$(PILUM)/Pilum_SANS_DEBUG.o \
+		$(PILUM)/DecodageDOptionsPilum.o \
+		$(PILUM)/DecodageDeCommandesPilum.o \
+		\
+		$(SYNTHESE_PILUM)/LanguesSynthesePilum.o \
+		$(SYNTHESE_PILUM)/SynthesePilum.o \
+		\
+		$(FONCTIONS_IMBRIQUEES)/LanguesFonctionsImbriquees.o \
+		$(FONCTIONS_IMBRIQUEES)/FonctionsImbriquees.o \
+		\
+		$(FONCTIONS_IMBRIQUEES)/DecodageDOptionsFonctionsImbriquees.o \
+		$(FONCTIONS_IMBRIQUEES)/FonctionsImbriqueesMain.o
+	@echo ""
+	$(CXX) \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$^
+	@echo ""
+	@ls -sal $@
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	clean_FonctionsImbriquees
+# -------------------------------------------------------------------------
+
+.PHONY : message_clean_FonctionsImbriquees clean_FonctionsImbriquees do_clean_FonctionsImbriquees
+
+message_clean_FonctionsImbriquees:
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> clean_FonctionsImbriquees:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+
+clean_FonctionsImbriquees : \
+		message_clean_FonctionsImbriquees \
+		do_clean_FonctionsImbriquees
+
+ifneq ($(strip $(FICHIERS_FonctionsImbriquees)),)
+
+do_clean_FonctionsImbriquees :
+	rm -f $(FICHIERS_FonctionsImbriquees)
+	@echo ""
+
+endif

@@ -1,0 +1,5 @@
+carre (n) = n * n;
+? carre (LireNombre ("Pour quelle valeur voulez-vous calculer 'carre'?"));
+somme (i) = i + 3;
+? somme (3);
+super (j, k) = somme [j - k);

@@ -1,0 +1,50 @@
+# -------------------------------------------------------------------------
+#	Makefile pour la gestion du contenu de "exemples"
+#	J. Menu - 19/10/2010
+#
+#	Version $Id$ du $Date$
+# -------------------------------------------------------------------------
+
+
+# -------------------------------------------------------------------------
+#	Fichiers de code Pilum pouvant avoir été générés
+# -------------------------------------------------------------------------
+
+FICHIERS_PILUM = \
+	$(addprefix \
+		$(EXEMPLES)/,\
+		$(shell ls $(EXEMPLES) | grep -v makefile_exemples | grep -v .lista | grep -v README) \
+	)
+
+
+# -------------------------------------------------------------------------
+#	clean_exemples
+# -------------------------------------------------------------------------
+
+.PHONY : message_clean_exemples clean_exemples do_clean_exemples
+
+message_clean_exemples:
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> clean_exemples:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+
+clean_exemples : \
+		message_clean_exemples \
+		do_clean_exemples
+
+ifneq ($(strip $(FICHIERS_PILUM)),)
+
+do_clean_exemples :
+	rm -f $(FICHIERS_PILUM)
+	@echo ""
+
+endif
+
+
+#else
+
+#do_clean_exemples :
+#	@echo "FICHIERS_PILUM = $(FICHIERS_PILUM)"
+#	@echo "--- Rien à supprimer dans $(EXEMPLES)"
+#	@echo ""

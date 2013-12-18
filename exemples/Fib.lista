@@ -1,0 +1,20 @@
+fib (n) =
+		Si (
+			InfEgale (n, 1),
+			n,
+			fib (n - 1) + fib (n - 2)
+			);
+
+?	Pour (
+		i, 1, 20, 
+		Seq (
+			EcrireNombre (i),
+			EcrireNombre (fib (i)),
+			Si (
+				Sup (i, 1),
+				EcrireNombre (fib (i) / fib (i - 1)),
+				Vide
+				),
+			EcrireFinDeLigne ()
+			)
+		);

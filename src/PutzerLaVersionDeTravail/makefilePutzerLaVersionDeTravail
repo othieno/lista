@@ -1,0 +1,69 @@
+# -------------------------------------------------------------------------
+#	Makefile pour putzer de la version de travail utilisée par l'auteur...
+#	J. Menu - 19/10/2010
+#
+#	Version $Id$ du $Date$
+# -------------------------------------------------------------------------
+
+
+# -------------------------------------------------------------------------
+#	Objets à construire
+# -------------------------------------------------------------------------
+
+PutzerLaVersionDeTravail.yy.o : \
+		PutzerLaVersionDeTravail.yy.cc \
+		$(MAKEFILE)
+	$(CPLUSPLUS) -c -o $@ \
+		$< $(OPTIONS_CPLUSPLUS)
+
+PutzerLaVersionDeTravailMain.o : \
+		PutzerLaVersionDeTravailMain.cc \
+		$(MAKEFILE)
+	$(CPLUSPLUS) -c $< -o $@ \
+		$(OPTIONS_CPLUSPLUS)
+
+OBJETS_PutzerLaVersionDeTravail = \
+	PutzerLaVersionDeTravail.yy.o \
+	PutzerLaVersionDeTravailMain.o
+
+EXECUTABLE_PutzerLaVersionDeTravail = \
+	EXECUTABLE_PutzerLaVersionDeTravail
+
+
+# -------------------------------------------------------------------------
+#	La cible à construire
+# -------------------------------------------------------------------------
+
+.PHONY : message_PutzerLaVersionDeTravail executables_PutzerLaVersionDeTravail
+
+message_PutzerLaVersionDeTravail:
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> executables_PutzerLaVersionDeTravail:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+
+PutzerLaVersionDeTravail : \
+		$(OBJETS_PutzerLaVersionDeTravail) \
+		$(MAKEFILE) 
+	@echo ""
+	$(CPLUSPLUS) -o $@ \
+		$(OPTIONS_CPLUSPLUS) \
+		$(OBJETS_PutzerLaVersionDeTravail)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	clean_PutzerLaVersionDeTravail
+# -------------------------------------------------------------------------
+
+.PHONY : clean_PutzerLaVersionDeTravail
+
+clean_PutzerLaVersionDeTravail :
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> $@:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+	rm -f \
+		$(OBJETS_PutzerLaVersionDeTravail) \
+		$(EXECUTABLE_PutzerLaVersionDeTravail)
+	@echo ""

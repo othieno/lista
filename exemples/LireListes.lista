@@ -1,0 +1,5 @@
+// test LireListeDeNombres
+
+? LireListe ("Veullez taper une liste de nombres");
+
+? LireListe ("Veullez taper une liste de nombres");

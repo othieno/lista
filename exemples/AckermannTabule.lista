@@ -1,0 +1,24 @@
+Ack (m, n) =
+	Si (
+		Egale (m, 0),
+		n + 1,
+		Si (
+			Egale (n, 0),
+			Ack (m - 1, 1),
+			Ack (m - 1, Ack (m, n - 1))
+			)
+		);
+
+? Pour (i, 0, 4,
+	Seq (
+		Pour (j, 0, 4,
+			Seq (
+				EcrireNombre (i),
+				EcrireNombre (j),
+				EcrireNombre (Ack (i, j)),
+				EcrireFinDeLigne ()
+				)
+			),
+		EcrireFinDeLigne ()
+		)
+	);

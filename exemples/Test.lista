@@ -1,0 +1,40 @@
+toto () = 7;
+
+hasarder (n) =
+	Si (
+		Sup (n, 0),
+		Seq (
+			hasarder (n - 1),
+			EcrireNombre (n),
+			EcrireNombre (Hasard ()),
+			EcrireFinDeLigne ()
+			),
+		Vide
+		);
+
+fact (n) =
+	Si (
+		InfEgale (n, 0),
+		1,
+		n * fact (n - 1)
+		);
+
+ptt (n) =
+	Si (
+		Sup (n, 0),
+		Seq (
+			ptt (n - 1),
+			EcrireNombre (n),
+			EcrireNombre (fact (n)),
+			EcrireFinDeLigne ()
+			),
+		Vide
+		);
+
+?	hasarder (3);
+
+?	ptt (10);
+
+?	Seq (3, 17, Sin (E));
+
+?	Seq1 (3, 17, Sin (E));

@@ -1,0 +1,20 @@
+?	Somme (i, 1, 5, i * i);
+
+?	Somme (
+		i, 1, 5,
+		Somme (
+			j, i, i * i,
+			1 / (i + j)
+			)
+		);
+
+?	Produit (i, 1, 6, i);
+
+?	Pour (
+		i, 1, 10, 
+		Seq (
+			EcrireNombre (i),
+			EcrireNombre (Sin (i)),
+			EcrireFinDeLigne ()
+			)
+		);

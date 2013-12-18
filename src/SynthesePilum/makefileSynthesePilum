@@ -1,0 +1,92 @@
+# -------------------------------------------------------------------------
+#	Makefile pour SynthesePilum
+#	J. Menu - 19/10/2010
+#
+#	Version $Id$ du $Date$
+# -------------------------------------------------------------------------
+
+
+# -------------------------------------------------------------------------
+#	Objets et exécutables à construire
+# -------------------------------------------------------------------------
+
+OBJETS_SynthesePilum = \
+	$(SYNTHESE_PILUM)/LanguesSynthesePilum.o \
+	$(SYNTHESE_PILUM)/SynthesePilum.o
+
+
+# -------------------------------------------------------------------------
+#	La cible à construire
+# -------------------------------------------------------------------------
+
+.PHONY : message_SynthesePilum objets_SynthesePilum
+
+message_SynthesePilum:
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> objets_SynthesePilum:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+
+objets_SynthesePilum: \
+		message_SynthesePilum \
+		$(OBJETS_SynthesePilum)
+
+
+# -------------------------------------------------------------------------
+#	Langues
+# -------------------------------------------------------------------------
+
+$(SYNTHESE_PILUM)/LanguesSynthesePilum.o : \
+		$(SYNTHESE_PILUM)/LanguesSynthesePilum.cc \
+		$(SYNTHESE_PILUM)/LanguesSynthesePilum.h \
+		$(TYPES_ET_VERSION)/Types.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(MAKEFILE_SynthesePilum)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	Synthese de code binaire Pilum
+# -------------------------------------------------------------------------
+
+$(SYNTHESE_PILUM)/SynthesePilum.o : \
+		$(SYNTHESE_PILUM)/SynthesePilum.cc \
+		$(SYNTHESE_PILUM)/SynthesePilum.h \
+		$(TYPES_ET_VERSION)/Types.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		$(SYNTHESE_PILUM)/LanguesSynthesePilum.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(PILUM)/Pilum.h \
+		$(MAKEFILE_SynthesePilum)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(PILUM)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	clean_SynthesePilum
+# -------------------------------------------------------------------------
+
+.PHONY : clean_SynthesePilum
+
+clean_SynthesePilum :
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> $@:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+	rm -f $(OBJETS_SynthesePilum) 
+	@echo ""

@@ -1,0 +1,18 @@
+
+// A function that cannot be evaluated, whatever it's argument
+
+NeverEnding (n) =
+	1 + NeverEnding (n + 1);
+
+
+// A program that illustrates the virtues of call by name/need
+// Call by value will just defeat it!
+
+funct (m, n) =
+	If (
+		LessThan (m, 100),
+			m + 12,
+			n
+			);
+
+? funct (3 + 5, NeverEnding (7));

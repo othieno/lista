@@ -1,0 +1,10 @@
+// This function is infered as returning a string
+
+/*
+	Voici un commentaire parenthese
+*/
+
+/* en voici un autre ... */
+
+
+? "coucou" " le monde";

@@ -1,0 +1,33 @@
+Renommé "FinEvaluationDirecte ()" en "FinEvalProcedure ()"
+dans LanguesSemantique.h, .cc et Semantique.cc
+Merci à Nabil Stendardo pour avoir relevé ce point!
+
+Ajouté "Format*Allege ()" dans LanguesLexique.h, .cc pour alléger
+la présentation des messages d'erreur à la compilation en mode non verbeux
+
+Putzé un problème d'évaluation du niveau statique courant dans FBLista.cc
+dans le cas d'appel à des fonctions prédéfinies
+
+Forcé /bin/bash comme shell dans le makefile, certains OS comme Ubuntu
+ayant un "sh" demandant un argument pour le "read"
+
+Corrigé l'incrémentation du compteur d'itérations dans FBLista.cc,
+qui intervenait trop tard,
+et ajouté ce numero au nom du niveau de déclaration correspondant,
+pour la clarté d'affichage des graphes sémantiques et des dictionnaires
+
+Corrigé "ErreurSyntaxique ()" dans SupportFB.cc, 
+qui enregistrait une erreur lexicale et non syntaxique
+
+Remplacé "extern char yytext [];" par "extern char * yytext;" 
+dans SupportF.cc et SupportFB.cc, 
+car le detail de la position d'erreur lexicale
+n'affichait pas le caractère concerné et son code ASCII 
+dans ListaLexF et ListaSyntFB
+
+Forcé la production des noms qualifiés des identificateurs 
+en cas de masquage d'une déclaration
+
+Ajouté "Version.h" aux dépendances de "Langues.o"
+
+Ajouté des inclusions manquantes comme "cstdlib" détectées par g++ 4.3.x

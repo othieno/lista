@@ -1,0 +1,13 @@
+carre (n) = n * n;
+cube (s) = s * s * s;
+
+nand (p, q) = Non (Et (p, q));
+
+cat (chaine1, chaine2) = chaine1 !! chaine2;
+
+puissance6 (t) = carre (cube (t));
+
+? puissance6 (
+	LireNombre (
+		"Pour quelle valeur voulez-vous calculer 'puissance6'?" )
+	);

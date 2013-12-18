@@ -1,0 +1,137 @@
+# -------------------------------------------------------------------------
+#	Makefile pour la gestion du contenu de "bin"
+#	J. Menu - 19/10/2010
+#
+#	Version $Id$ du $Date$
+# -------------------------------------------------------------------------
+
+
+# -------------------------------------------------------------------------
+#	Accès relatif au dossier "src"
+# -------------------------------------------------------------------------
+
+SRC_DEPUIS_BIN				= ../src
+
+
+# -------------------------------------------------------------------------
+#	Liens à construire
+# -------------------------------------------------------------------------
+
+LIENS_bin = \
+	$(BIN)/ListaLexFlex \
+	$(BIN)/ListaLexPredictif \
+	\
+	$(BIN)/ListaSyntFlexBison \
+	$(BIN)/ListaSyntPredictifDescenteRecursive \
+	\
+	$(BIN)/ListaSemPredictifDescenteRecursive \
+	$(BIN)/ListaSemFlexBison \
+	\
+	$(BIN)/ListaPredictifDescenteRecursive \
+	$(BIN)/ListaFlexBison \
+	\
+	$(BIN)/Pilum_SANS_DEBUG \
+	$(BIN)/Pilum_AVEC_DEBUG \
+	\
+	$(BIN)/FonctionsImbriquees
+
+
+# -------------------------------------------------------------------------
+#	La cible à construire
+# -------------------------------------------------------------------------
+
+.PHONY : message_bin liens_bin bin
+
+message_bin:
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> liens_bin:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+
+liens_bin: \
+		message_bin \
+		$(LIENS_bin)
+
+bin : \
+		liens_bin
+
+
+# -------------------------------------------------------------------------
+#	Liens
+# -------------------------------------------------------------------------
+
+$(BIN)/ListaLexFlex :
+	cd $(BIN) && \
+	ln -sfn $(SRC_DEPUIS_BIN)/Lexique/ListaLexFlex
+
+$(BIN)/ListaLexPredictif :
+	cd $(BIN) && \
+	ln -sfn $(SRC_DEPUIS_BIN)/Lexique/ListaLexPredictif
+
+
+
+$(BIN)/ListaSyntFlexBison :
+	cd $(BIN) && \
+	ln -sfn $(SRC_DEPUIS_BIN)/Syntaxe/ListaSyntFlexBison
+	@echo ""
+	
+$(BIN)/ListaSyntPredictifDescenteRecursive :
+	cd $(BIN) && \
+	ln -sfn $(SRC_DEPUIS_BIN)/Syntaxe/ListaSyntPredictifDescenteRecursive
+	@echo ""
+
+
+$(BIN)/ListaSemPredictifDescenteRecursive :
+	cd $(BIN) && \
+	ln -sfn $(SRC_DEPUIS_BIN)/Semantique/ListaSemPredictifDescenteRecursive
+	@echo ""
+	
+$(BIN)/ListaSemFlexBison :
+	cd $(BIN) && \
+	ln -sfn $(SRC_DEPUIS_BIN)/Semantique/ListaSemFlexBison
+	@echo ""
+
+
+
+$(BIN)/ListaPredictifDescenteRecursive :
+	cd $(BIN) && \
+	ln -sfn $(SRC_DEPUIS_BIN)/CompilateursComplets/ListaPredictifDescenteRecursive
+	@echo ""
+	
+$(BIN)/ListaFlexBison :
+	cd $(BIN) && \
+	ln -sfn $(SRC_DEPUIS_BIN)/CompilateursComplets/ListaFlexBison
+	@echo ""
+
+
+
+$(BIN)/Pilum_SANS_DEBUG :
+	cd $(BIN) && \
+	ln -sfn $(SRC_DEPUIS_BIN)/Pilum/Pilum_SANS_DEBUG
+	@echo ""
+	
+$(BIN)/Pilum_AVEC_DEBUG :
+	cd $(BIN) && \
+	ln -sfn $(SRC_DEPUIS_BIN)/Pilum/Pilum_AVEC_DEBUG
+	@echo ""
+
+
+$(BIN)/FonctionsImbriquees :
+	cd $(BIN) && \
+	ln -sfn $(SRC_DEPUIS_BIN)/FonctionsImbriquees/FonctionsImbriquees
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	clean_bin
+# -------------------------------------------------------------------------
+
+.PHONY : clean_bin
+
+clean_bin :
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> $@:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+	rm -f $(LIENS_bin) 
+	@echo ""

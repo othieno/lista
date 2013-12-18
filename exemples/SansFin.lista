@@ -1,0 +1,18 @@
+
+// Une function qui ne peut pas etre evaluee, quel que soit son argument
+
+SansFin (n) =
+	1 + SansFin (n + 1);
+
+
+// Un programme qui illustre les vertus des passages par nom/besoin
+// Un passage par valeur le rend inutilisable!
+
+fonct (m, n) =
+	Si (
+		Inf (m, 100),
+			m + 12,
+			n
+			);
+
+? fonct (3 + 5, SansFin (7));

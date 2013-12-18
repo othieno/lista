@@ -1,0 +1,8 @@
+Peano (n) =
+	Si (
+		Egale (n, 0),
+		0,
+		n + Peano (n - 1)
+	);
+
+? Peano (1);

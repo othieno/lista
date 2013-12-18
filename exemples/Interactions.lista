@@ -1,0 +1,3 @@
+fonct (Somme) = Somme + 3;
+
+? Somme (Somme, 1, 3, fonct (Somme));

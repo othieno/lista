@@ -1,0 +1,11 @@
+/* The good old recursive version of the factorial function */
+
+fact (n) =
+	If (
+		LessThanOrEqual (n, 0),
+		1,
+		n * fact (n - 1)
+		);
+
+? fact (
+	ReadNumber ("==> Which value do you want to evaluate 'fact' for?") );

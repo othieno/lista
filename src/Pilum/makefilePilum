@@ -1,0 +1,290 @@
+# -------------------------------------------------------------------------
+#	Makefile pour Pilum
+#	J. Menu - 19/10/2010
+#
+#	Version $Id$ du $Date$
+# -------------------------------------------------------------------------
+
+
+# -------------------------------------------------------------------------
+#	Objets et exécutables à construire
+# -------------------------------------------------------------------------
+
+EXECUTABLES_Pilum = \
+	$(PILUM)/Pilum_SANS_DEBUG \
+	$(PILUM)/Pilum_AVEC_DEBUG
+
+
+OBJETS_Pilum = \
+		$(SUPPORT_CPLUSPLUS)/LanguesSupportCPlusPlus.o \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.o \
+		\
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.o \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/DecodageDOptions.o \
+		\
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.o \
+		\
+		$(PILUM)/LanguesPilum.o \
+		\
+		$(PILUM)/Pilum_SANS_DEBUG.o \
+		$(PILUM)/Pilum_AVEC_DEBUG.o \
+		\
+		$(PILUM)/DecodageDOptionsPilum.o \
+		$(PILUM)/DecodageDeCommandesPilum.o \
+		\
+		$(PILUM)/PilumMain_AVEC_DEBUG.o \
+		$(PILUM)/PilumMain_SANS_DEBUG.o
+
+
+# -------------------------------------------------------------------------
+#	La cible à construire
+# -------------------------------------------------------------------------
+
+.PHONY : message_Pilum executables_Pilum
+
+message_Pilum:
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> executables_Pilum:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+
+executables_Pilum: \
+		message_Pilum \
+		$(EXECUTABLES_Pilum)
+
+
+# -------------------------------------------------------------------------
+#	LanguesPilum
+# -------------------------------------------------------------------------
+
+$(PILUM)/LanguesPilum.o : \
+		$(PILUM)/LanguesPilum.cc \
+		$(PILUM)/LanguesPilum.h \
+		$(TYPES_ET_VERSION)/Types.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(MAKEFILE)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS)
+
+
+# -------------------------------------------------------------------------
+#	DecodageDOptionsPilum
+# -------------------------------------------------------------------------
+
+$(PILUM)/DecodageDOptionsPilum.o : \
+		$(PILUM)/DecodageDOptionsPilum.cc \
+		$(PILUM)/DecodageDOptionsPilum.h \
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/DecodageDOptions.h \
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.h \
+		$(PILUM)/LanguesPilum.h \
+		$(MAKEFILE_Pilum)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	DecodageDeCommandesPilum
+# -------------------------------------------------------------------------
+
+$(PILUM)/DecodageDeCommandesPilum.o : \
+		$(PILUM)/DecodageDeCommandesPilum.cc \
+		$(PILUM)/DecodageDeCommandesPilum.h \
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/DecodageDOptions.h \
+		$(PILUM)/LanguesPilum.h \
+		$(MAKEFILE_Pilum)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	Pilum
+# -------------------------------------------------------------------------
+
+$(PILUM)/Pilum_SANS_DEBUG.o : \
+		$(PILUM)/Pilum.cc \
+		$(PILUM)/Pilum.h \
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.h \
+		$(PILUM)/LanguesPilum.h \
+		$(MAKEFILE)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS)
+
+
+$(PILUM)/Pilum_AVEC_DEBUG.o : \
+		$(PILUM)/Pilum.cc \
+		$(PILUM)/Pilum.h \
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.h \
+		$(MAKEFILE)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		-DDEBUG_PILUM \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS)
+
+
+# -------------------------------------------------------------------------
+#	PilumMain
+# -------------------------------------------------------------------------
+
+$(PILUM)/PilumMain_SANS_DEBUG.o : \
+		$(PILUM)/PilumMain.cc \
+		$(TYPES_ET_VERSION)/Types.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.h \
+		$(PILUM)/LanguesPilum.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(PILUM)/Pilum.h \
+		$(MAKEFILE)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS)
+
+
+$(PILUM)/PilumMain_AVEC_DEBUG.o : \
+		$(PILUM)/PilumMain.cc \
+		$(TYPES_ET_VERSION)/Types.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.h \
+		$(PILUM)/LanguesPilum.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(PILUM)/Pilum.h \
+		$(MAKEFILE)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		-DDEBUG_PILUM \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LANGUES_PREDEFINIS)
+
+
+# -------------------------------------------------------------------------
+#	Pilum_SANS_DEBUG
+# -------------------------------------------------------------------------
+
+$(PILUM)/Pilum_SANS_DEBUG : \
+		$(SUPPORT_CPLUSPLUS)/LanguesSupportCPlusPlus.o \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.o \
+		\
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.o \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/DecodageDOptions.o \
+		\
+		$(EXTENSIONS)/liste.o \
+		\
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.o \
+		\
+		$(PILUM)/LanguesPilum.o \
+		\
+		$(PILUM)/Pilum_SANS_DEBUG.o \
+		\
+		$(PILUM)/DecodageDOptionsPilum.o \
+		$(PILUM)/DecodageDeCommandesPilum.o \
+		\
+		$(PILUM)/PilumMain_SANS_DEBUG.o
+	@echo ""
+	$(CXX) \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$^
+	@echo ""
+	@ls -sal $@
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	Pilum_AVEC_DEBUG
+# -------------------------------------------------------------------------
+
+$(PILUM)/Pilum_AVEC_DEBUG : \
+		$(SUPPORT_CPLUSPLUS)/LanguesSupportCPlusPlus.o \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.o \
+		\
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.o \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/DecodageDOptions.o \
+		\
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.o \
+		\
+		$(EXTENSIONS)/liste.o \
+		\
+		$(PILUM)/LanguesPilum.o \
+		\
+		$(PILUM)/Pilum_AVEC_DEBUG.o \
+		\
+		$(PILUM)/DecodageDOptionsPilum.o \
+		$(PILUM)/DecodageDeCommandesPilum.o \
+		\
+		$(PILUM)/PilumMain_AVEC_DEBUG.o
+	@echo ""
+	$(CXX) \
+		-o $@ \
+		$(OPTIONS_CXX) \
+		$^
+	@echo ""
+	@ls -sal $@
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	clean_Pilum
+# -------------------------------------------------------------------------
+
+.PHONY : clean_Pilum
+
+clean_Pilum :
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> $@:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+	rm -f \
+		$(OBJETS_Pilum) \
+		$(EXECUTABLES_Pilum)
+	@echo ""

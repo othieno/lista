@@ -1,0 +1,71 @@
+# -------------------------------------------------------------------------
+#	Makefile pour SupportFlexBison
+#	J. Menu - 19/10/2010
+#
+#	Version $Id$ du $Date$
+# -------------------------------------------------------------------------
+
+
+# -------------------------------------------------------------------------
+#	Objets à construire
+# -------------------------------------------------------------------------
+
+OBJETS_SupportFlexBison = \
+	$(SUPPORT_FLEX_BISON)/SupportFlexBison.o
+
+
+# -------------------------------------------------------------------------
+#	La cible à construire
+# -------------------------------------------------------------------------
+
+.PHONY : message_SupportFlexBison objets_SupportFlexBison
+
+message_SupportFlexBison:
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> objets_SupportFlexBison:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+
+objets_SupportFlexBison: \
+		message_SupportFlexBison \
+		$(OBJETS_SupportFlexBison)
+
+
+# -------------------------------------------------------------------------
+#	SupportFlexBison
+# -------------------------------------------------------------------------
+
+$(SUPPORT_FLEX_BISON)/SupportFlexBison.o : \
+		$(SUPPORT_FLEX_BISON)/SupportFlexBison.cc \
+		$(SUPPORT_FLEX_BISON)/SupportFlexBison.h \
+		$(TYPES_ET_VERSION)/Types.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		$(LEXIQUE)/LanguesLexique.h \
+		$(SYNTAXE)/LanguesSyntaxe.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(MAKEFILE_SupportFlexBison)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LEXIQUE) \
+			-I $(SYNTAXE)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	clean_SupportFlexBison
+# -------------------------------------------------------------------------
+
+.PHONY : clean_SupportFlexBison
+
+clean_SupportFlexBison :
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> $@:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+	rm -f $(OBJETS_SupportFlexBison)
+	@echo ""

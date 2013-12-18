@@ -1,0 +1,4 @@
+SommeCarres (debut, fin) =
+	Somme (i, debut, fin, i * i);
+
+? SommeCarres (3, 5);

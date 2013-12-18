@@ -1,0 +1,11 @@
+?	Seq (3, Sin (E));
+
+?	Seq1 (3, Sin (E));
+
+?	Seq (10, 20, 30);
+
+?	Seq1 (101, 102, 103);
+
+Seq (n) = n + 3;
+
+? Seq (LireNombre ("Pour quelle valeur voulez-vous calculer 'Seq'?"));

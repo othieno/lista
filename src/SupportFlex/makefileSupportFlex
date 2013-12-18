@@ -1,0 +1,69 @@
+# -------------------------------------------------------------------------
+#	Makefile pour SupportFlex
+#	J. Menu - 19/10/2010
+#
+#	Version $Id$ du $Date$
+# -------------------------------------------------------------------------
+
+
+# -------------------------------------------------------------------------
+#	Objets à construire
+# -------------------------------------------------------------------------
+
+OBJETS_SupportFlex = \
+		$(SUPPORT_FLEX)/SupportFlex.o
+
+
+# -------------------------------------------------------------------------
+#	La cible à construire
+# -------------------------------------------------------------------------
+
+.PHONY : message_SupportFlex objets_SupportFlex
+
+message_SupportFlex:
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> objets_SupportFlex:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+
+objets_SupportFlex: \
+		message_SupportFlex \
+		$(OBJETS_SupportFlex)
+
+
+# -------------------------------------------------------------------------
+#	SupportFlex
+# -------------------------------------------------------------------------
+
+$(SUPPORT_FLEX)/SupportFlex.o : \
+		$(SUPPORT_FLEX)/SupportFlex.cc \
+		$(SUPPORT_FLEX)/SupportFlex.h \
+		$(TYPES_ET_VERSION)/Types.h \
+		$(LANGUES_ET_DECODAGE_D_OPTIONS)/Langues.h \
+		$(LEXIQUE)/LanguesLexique.h \
+		$(SUPPORT_CPLUSPLUS)/LanguesSupportCPlusPlus.h \
+		$(MAKEFILE)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS) \
+			-I $(LEXIQUE)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	clean_SupportFlex
+# -------------------------------------------------------------------------
+
+.PHONY : clean_SupportFlex
+
+clean_SupportFlex :
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> $@:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+	rm -f $(OBJETS_SupportFlex)
+	@echo ""

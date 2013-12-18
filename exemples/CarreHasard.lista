@@ -1,0 +1,3 @@
+Carre (n) = n * n;
+
+? Carre (Hasard () + Hasard ());

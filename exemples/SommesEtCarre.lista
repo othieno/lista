@@ -1,0 +1,24 @@
+carre (n) = n * n;
+
+? Somme (
+		i, 1, 5,
+		carre (i)
+	);
+
+? carre (
+	Somme (
+		i, 1, 5,
+		Somme (
+			j, i, i * i,
+			1 / (i + j)
+		)
+	));
+
+? Somme (
+		i, 1, 5,
+		Somme (
+			j, i, i * i,
+			1 / (i + j)
+		)
+	);
+

@@ -1,0 +1,93 @@
+// =========================================================================
+//	LISEZ MOI
+//	J. Menu - http://cui.unige.ch/DI/cours/CompInterpretes
+//
+//	Version $VERSION
+// =========================================================================
+
+
+                     ---------------------------------------
+                     A propos de cette implantation de Lista
+                     ---------------------------------------
+
+Cette version de l'implantation de Formula rebaptisé Lista
+est le point de départ des exercices du cours:
+	Compilateurs & Interprètes (13X007)
+	http://cui.unige.ch/DI/cours/CompInterpretes/Accueil.html
+donné par l'auteur a l'Université de Genève à partir de l'automne 2006.
+
+Pour visualiser les fichiers texte au mieux, réglez le Tab sur 3 caractères
+
+--
+
+Les briques qui constituent cette implantation sont:
+	- un analyseur lexical écrit "à la main" (methode prédictive);
+	- un analyseur syntaxique écrit "à la main" (descente récursive);
+	- des grammaires Flex pour l'analyse lexicale;
+	- des grammaires Bison pour les analyses syntaxique et syntaxico-sémantique;
+	- un analyseur sémantique partage par les versions "a la main" et celles
+	  synthétisées par Bison;
+	- un mécanisme permettant l'"évaluation directe" des graphes sémantiques;
+	- un synthétiseur de code Pilum;
+	- une machine virtuelle Pilum.
+
+Les programmes principaux sont les fichiers "Main*.cc".
+Les fichiers implantant l'analyse sémantique se limitent à l'analyse
+sémantique et a l'évaluation directe des graphes sémantiques
+s'ils sont compilés sans que le symbole "SYNTHESE_PILUM" soit défini.
+Sinon, il s'y ajoute la synthèse de code objet Pilum en format binaire
+sur un fichier, et la possibilité de lancer directement
+l'exécution de ce code par la machine virtuelle.
+
+On trouve dans les fichiers "doc/LISEZ_MOI*":
+	- les noms et signification des différents dossiers;
+	- les noms et le contenu des fichiers de code source;
+	- les conventions utilisées pour le choix des identificateurs;
+	  les noms des exécutables et leur signification,
+	- les diverses options disponibles lors de la construction
+	  des exécutables avec "make".
+
+--
+
+Cette implantation est prévue pour être construite avec GNU Make et GNU g++ 4.x.
+En l'état actuel, elle a été testée avec:
+	- gmake 3.79, 3.79.1 et 3.80
+	- g++ 3.1 et 3.3 (Mac OS X 10.2.6)
+	- g++ 3.3 (Mac OS X 10.3)
+	- g++ 3.2 (Mandrake 9.0)
+	- g++ 3.2 (Redhat 9.0)
+	- g++ 3.2.2 (Tru64 V5.1A)
+	- g++ 4.x (Linux, Mac OS X 10.4.x)
+
+Pour connaître les versions à votre disposition, vous pouvez utiliser:
+	- g++ --version
+	- flex --version
+	- bison --version
+	- make --version
+		(ou "gmake" ou "gnumake", selon votre environnement de travail)
+
+Plus de détails sur "GNU make" aux URL :
+	http://www.gnu.org/software/make/make.html
+	http://www.gnu.org/manual/make/index.html
+et un Bison récent
+
+Pour savoir comment utiliser le "makefile", tapez "make help".
+
+--
+
+Les "#include <unistd.h>" sont nécessaires pour g++ à partir de 3.2
+et ne gênent pas pour 3.1 et les versions plus récentes.
+Nous avons donc évité de faire de la compilation conditionnelle
+dans ce dernier cas.
+
+Merci d'envoyer à l'auteur toute proposition d'amélioration
+et/ou d'adaptation à d'autres compilateurs et systèmes d'exploitation!
+
+--
+
+Dr Jacques Menu
+Chargé de cours
+CUI
+Université de Genève
+mailto:Jacques.Menu@cui.unige.ch
+http://cui.unige.ch/~menu

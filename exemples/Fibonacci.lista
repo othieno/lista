@@ -1,0 +1,126 @@
+// =========================================================================
+//	Fib.lista
+//	J. Menu - http://cui.unige.ch/DI/cours/CompInterpretes
+//
+//	Differentes versions de la fonction de Fibonacci et 
+//	de calcul du nombre d'or...
+// =========================================================================
+
+
+// -------------------------------------------------------------------------
+//	'puissance', dichotomique
+// -------------------------------------------------------------------------
+
+puissance (x, y) =
+	Si (
+		Inf (x, 0),
+		Si (
+			Pair (y),
+			Exp (y * Log (- x)),
+			- Exp (y * Log (- x))
+			),
+		Exp (y * Log (x))
+		);
+
+?	EcrireChaine (
+		"     --- Tabulation de 'puissance (i, j)' ---\n\n" !!
+		"         i              j       puissance (i, j)\n" !!
+		"     --------       ---------   ----------------\n" ),
+	Pour (
+		i, 1, 5, 
+		Seq (
+			Pour (
+				j, 1, 5, 
+				Seq (
+					EcrireChaine (FormaterNombre (i, 10, 0)),
+					EcrireChaine ("     "),
+					EcrireChaine (FormaterNombre (j, 10, 0)),
+					EcrireChaine ("     "),
+					EcrireChaine (FormaterNombre (puissance (i, j), 10, 0)),
+					EcrireFinDeLigne ()
+					)
+				),
+			EcrireFinDeLigne ()
+			)
+		);
+
+
+// -------------------------------------------------------------------------
+//	Nombre d'or, calcul direct
+// -------------------------------------------------------------------------
+
+OR				=	(1 + Racine (5)) / 2;
+UnMoinsOR	=	(1 - Racine (5)) / 2;
+
+?	EcrireChaine (
+		"--- Calcul du nombre d'or comme '(1 + Racine (5)) / 2' ---\n" ),
+	OR;
+
+?	EcrireChaine (
+		"--- Calcul de '1 - nombre d'or' comme '(1 - Racine (5)) / 2' ---\n" ),
+	UnMoinsOR;
+
+
+// -------------------------------------------------------------------------
+//	Fibonacci classique, doublement recursive
+// -------------------------------------------------------------------------
+
+fibRec (n) =
+		Si (
+			InfEgale (n, 1),
+			n,
+			fibRec (n - 1) + fibRec (n - 2)
+			);
+
+?	EcrireChaine (
+		"--- Calcul du nombre d'or comme limite de " !!
+		"'fibRec (i) / fibRec (i - 1)' ---\n\n" !!
+		"         i         fibRec (i)  fibRec (i) / fibRec (i - 1)\n" !!
+		"     --------      ----------      ----------------\n" ),
+	Pour (
+		i, 1, 20, 
+		Seq (
+			EcrireChaine (FormaterNombre (i, 10, 0)),
+			EcrireChaine ("     "),
+			EcrireChaine (FormaterNombre (fibRec (i), 10, 0)),
+			EcrireChaine ("     "),
+			Si (
+				Sup (i, 1),
+				EcrireNombre (fibRec (i) / fibRec (i - 1)),
+				Vide
+				),
+			EcrireFinDeLigne ()
+			)
+		);
+
+
+// -------------------------------------------------------------------------
+//	Fibonacci analytique, directe
+// -------------------------------------------------------------------------
+
+fibAna (n) =
+	(puissance (OR, n + 1) - puissance (UnMoinsOR, n + 1))
+		/
+	Racine (5);
+
+
+?	EcrireChaine (
+		"--- Calcul du nombre d'or comme limite de " !!
+		"'fibAna (i) / fibAna (i - 1)' ---\n\n" !!
+		"         i         fibAna (i)  fibAna (i) / fibAna (i - 1)\n" !!
+		"     --------      ----------      ----------------\n" ),
+	Pour (
+		i, 1, 20, 
+		Seq (
+			EcrireChaine (FormaterNombre (i, 10, 0)),
+			EcrireChaine ("     "),
+			EcrireChaine (FormaterNombre (fibAna (i), 10, 0)),
+			EcrireChaine ("     "),
+			Si (
+				Sup (i, 1),
+				EcrireNombre (fibAna (i) / fibAna (i - 1)),
+				Vide
+				),
+			EcrireFinDeLigne ()
+			)
+		);

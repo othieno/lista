@@ -1,0 +1,61 @@
+# -------------------------------------------------------------------------
+#	Makefile pour Pilum
+#	J. Menu - 19/10/2010
+#
+#	Version $Id$ du $Date$
+# -------------------------------------------------------------------------
+
+FICHIERS_Extensions = \
+	$(OBJETS_Extensions)
+
+# -------------------------------------------------------------------------
+#	Objets à construire
+# -------------------------------------------------------------------------
+
+OBJETS_Extensions	= $(EXTENSIONS)/liste.o
+
+
+objets_Extensions: $(OBJETS_Extensions)
+
+
+$(EXTENSIONS)/liste.o : \
+		$(EXTENSIONS)/liste.cc \
+		$(TYPES_ET_VERSION)/Types.h \
+		$(SUPPORT_CPLUSPLUS)/SupportCPlusPlus.h \
+		$(LANGUES_PREDEFINIS)/LanguesPredefinis.h \
+		$(MAKEFILE_Extensions)
+	$(CXX) \
+		-c $< \
+		-o $@ \
+		$(OPTIONS_CXX) \
+			-I $(TYPES_ET_VERSION) \
+			-I $(SUPPORT_CPLUSPLUS) \
+			-I $(LANGUES_PREDEFINIS) \
+			-I $(LANGUES_ET_DECODAGE_D_OPTIONS)
+	@echo ""
+
+
+# -------------------------------------------------------------------------
+#	clean_Extensions
+# -------------------------------------------------------------------------
+
+.PHONY : message_clean_Extensions clean_Extensions do_clean_Extensions
+
+message_clean_Extensions:
+	@echo "# -------------------------------------------------------------------------"
+	@echo "--> clean_Extensions:"
+	@echo "# -------------------------------------------------------------------------"
+	@echo ""
+
+clean_Extensions : \
+		message_clean_Extensions \
+		do_clean_Extensions
+
+
+ifneq ($(strip $(FICHIERS_Extensions)),)
+
+do_clean_Extensions :
+	rm -f $(FICHIERS_Extensions)
+	@echo ""
+
+endif
